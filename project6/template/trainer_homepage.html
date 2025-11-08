@@ -31,74 +31,39 @@
 
 </head>
 
-<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
-
-  <div class="site-wrap">
-
-    <div class="site-mobile-menu site-navbar-target">
-      <div class="site-mobile-menu-header">
-        <div class="site-mobile-menu-close mt-3">
-          <span class="icon-close2 js-menu-toggle"></span>
-        </div>
-      </div>
-      <div class="site-mobile-menu-body"></div>
-    </div>
-
-
-    
-    <div class="header-top bg-light">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-6 col-lg-3">
-            <a href="index.html">
-              <img src="{% static 'Index/images/logo.png' %}" alt="Image" class="img-fluid">
-              <!-- <strong>Water</strong>Boat -->
-            </a>
-          </div>
-          <div class="col-lg-3 d-none d-lg-block">
-
-            <div class="quick-contact-icons d-flex">
-              <div class="icon align-self-start">
-                <span class="icon-location-arrow text-primary"></span>
-              </div>
-              <div class="text">
-                <span class="h4 d-block">San Francisco</span>
-                <span class="caption-text">Mountain View, Fake st., CA</span>
-              </div>
-            </div>
-
-          </div>
-          <div class="col-lg-3 d-none d-lg-block">
-            <div class="quick-contact-icons d-flex">
-              <div class="icon align-self-start">
-                <span class="icon-phone text-primary"></span>
-              </div>
-              <div class="text">
-                <span class="h4 d-block">000 209 392 312</span>
-                <span class="caption-text">Toll free</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-3 d-none d-lg-block">
-            <div class="quick-contact-icons d-flex">
-              <div class="icon align-self-start">
-                <span class="icon-envelope text-primary"></span>
-              </div>
-              <div class="text">
-                <span class="h4 d-block">info@gmail.com</span>
-                <span class="caption-text">Gournadi, 1230 Bariasl</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-6 d-block d-lg-none text-right">
-              <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span
-                class="icon-menu h3"></span></a>
-          </div>
-        </div>
-      </div>
+<div class="header-top bg-light">
+  <div class="container">
+    <div class="row align-items-center">
       
+      <!-- Logo Section -->
+      <div class="col-6 col-lg-3">
+        <a href="{% url 'index' %}">
+          <img src="{% static 'Index/images/logo.png' %}" alt="Image" class="img-fluid">
+        </a>
+      </div>
+
+      <!-- Profile Section -->
+      <div class="col-6 col-lg-3 text-right ml-auto d-flex align-items-center justify-content-end">
+        <a href="{% url 'index' %}" class="d-flex align-items-center text-dark text-decoration-none">
+          <img src="{% static 'Index/images/profile.jpg' %}" alt="Profile" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;">
+          <span>View Profile</span>
+        </a>
+        <form method="POST" action="{% url 'index' %}" class="ml-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline btn-sm" style="color: blue;">Logout</button>
+        </form>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <div class="col-6 d-block d-lg-none text-right">
+        <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black">
+          <span class="icon-menu h3"></span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
       
@@ -106,6 +71,7 @@
 
       <div class="container">
         <div class="d-flex align-items-center">
+          
           <div class="mx-auto">
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none pl-0 d-lg-block">
@@ -113,31 +79,14 @@
                   <a href="{% url 'index' %}" class="nav-link text-left">Home</a>
                 </li>
                 <li>
-                  <a href="{% url 'user_registration' %}" class="nav-link text-left">Registration</a>
+                  <a href="services.html" class="nav-link text-left">Assigned User's</a>
                 </li>
-                <li>
-                  <a href="services.html" class="nav-link text-left">Services</a>
-                </li>
-                <li>
-                  <a href="testimonials.html" class="nav-link text-left">Testimonials</a>
-                </li>
-                <li>
-                  <a href="blog.html" class="nav-link text-left">Blog</a>
-                </li>
-                <li>
-                  <a href="contact.html" class="nav-link text-left">Contact</a>
-                </li>
-
-                <!-- 🔒 Login Logo Item -->
-                <li>
-                  <a href="{% url 'login' %}" class="nav-link text-left">
-                    <img src="{% static 'Index/images/logo.png' %}" alt="Login" style="height: 24px; vertical-align: middle;">
-                    <span style="margin-left: 8px;">Login</span>
-                  </a>
-                </li>
-              </ul>
+                
+              </ul>                                                                                                                                                                                                                                                                                          </ul>
             </nav>
+
           </div>
+         
         </div>
       </div>
 
@@ -383,57 +332,7 @@
         </div>
       </div>
     </div>
-
-    <div class="site-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-7">
-            <p><img src="{% static 'Index/images/hero_1.jpg' %}" alt="Image" class="img-fluid"></p>
-          </div>
-          <div class="col-md-5">
-            <span class="text-serif text-primary">Book Now</span>
-            <h3 class="heading-92913 text-black">Book A Yacht</h3>
-            <form action="#" class="row">
-              <div class="form-group col-md-6">
-                <label for="input-1">Full Name:</label>
-                <input type="text" class="form-control" id="input-1">
-              </div>
-              
-
-             
-
-              <div class="form-group col-md-12">
-                <label for="input-5">Diving You're Interested in:</label>
-                <select name="" id="input-5" class="form-control">
-                  <option value="">Free Dive</option>
-                  <option value="">Open Water</option>
-                  <option value="">Advance Open Water</option>
-                  <option value="">Night Dive</option>
-                  <option value="">Deep Dive</option>
-                </select>
-              </div>
-
-              <div class="form-group col-md-6">
-                <label for="input-6">Email Address</label>
-                <input type="text" class="form-control" id="input-6">
-              </div>
-
-              <div class="form-group col-md-6">
-                <label for="input-7">Phone Number</label>
-                <input type="text" class="form-control" id="input-7">
-              </div>
-
-              <div class="form-group col-md-12">
-                <input type="submit" class="btn btn-primary py-3 px-5" value="Book Now">
-              </div>
-
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-
+  
     <div class="site-section">
       <div class="container">
         <div class="row justify-content-center mb-5">
@@ -515,79 +414,6 @@
       </div>
     </div>
 
-    <div class="site-section">
-      <div class="container">
-        <div class="row justify-content-center mb-5">
-          <div class="col-md-7 text-center">
-            <span class="text-serif text-primary">Testimonial</span>
-            <h3 class="heading-92913 text-black text-center">What Customer Saying...</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="mb-4 mb-lg-0 col-md-6 col-lg-4">
-            <div class="testimony-39291">
-              <blockquote>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem laborum cumque commodi, unde doloribus.</p>
-              </blockquote>
-              <div class="d-flex vcard align-items-center">
-                <div class="pic mr-3">
-                  <img src="{% static 'Index/images/person_3_sq.jpg' %}" alt="Image" class="img-fluid">
-                </div>
-                <div class="text">
-                  <strong class="d-block">John Doe</strong>
-                  <span>CEO and Co-Founder</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mb-4 mb-lg-0 col-md-6 col-lg-4">
-            <div class="testimony-39291">
-              <blockquote>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem laborum cumque commodi, unde doloribus.</p>
-              </blockquote>
-              <div class="d-flex vcard align-items-center">
-                <div class="pic mr-3">
-                  <img src="{% static 'Index/images/person_4_sq.jpg' %}" alt="Image" class="img-fluid">
-                </div>
-                <div class="text">
-                  <strong class="d-block">John Doe</strong>
-                  <span>CEO and Co-Founder</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mb-4 mb-lg-0 col-md-6 col-lg-4">
-            <div class="testimony-39291">
-              <blockquote>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem laborum cumque commodi, unde doloribus.</p>
-              </blockquote>
-              <div class="d-flex vcard align-items-center">
-                <div class="pic mr-3">
-                  <img src="{% static 'Index/images/person_3_sq.jpg' %}" alt="Image" class="img-fluid">
-                </div>
-                <div class="text">
-                  <strong class="d-block">John Doe</strong>
-                  <span>CEO and Co-Founder</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="site-section bg-image overlay" style="background-image: url('images/hero_2.jpg');">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-7 text-center">
-            <h2 class="text-white">Get In Touch With Us</h2>
-            <p class="lead text-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-            <p class="mb-0"><a href="#" class="btn btn-warning py-3 px-5 text-white">Contact Us</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-
     
     <div class="footer bg-light">
       <div class="container">
@@ -595,37 +421,8 @@
           <div class="col-lg-3">
             <p class="mb-4"><img src="{% static 'Index/images/logo.png' %}" alt="Image" class="img-fluid"></p>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae nemo minima qui dolor, iusto iure.</p>  
-            <p><a href="#">Learn More</a></p>
           </div>
-          <div class="col-lg-3">
-            <h3 class="footer-heading"><span>Our Company</span></h3>
-            <ul class="list-unstyled">
-                <li><a href="#">About</a></li>
-                <li><a href="#">News</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Our Team</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Projects</a></li>
-            </ul>
-          </div>
-          <div class="col-lg-3">
-              <h3 class="footer-heading"><span>Our Services</span></h3>
-              <ul class="list-unstyled">
-                  <li><a href="#">Industrial</a></li>
-                  <li><a href="#">Construction</a></li>
-                  <li><a href="#">Remodeling</a></li>
-              </ul>
-          </div>
-          <div class="col-lg-3">
-              <h3 class="footer-heading"><span>Contact</span></h3>
-              <ul class="list-unstyled">
-                  <li><a href="#">Help Center</a></li>
-                  <li><a href="#">Support Community</a></li>
-                  <li><a href="#">Press</a></li>
-                  <li><a href="#">FAQ</a></li>
-                  <li><a href="#">Our Partners</a></li>
-              </ul>
-          </div>
+                        
         </div>
 
       </div>

@@ -1,0 +1,1234 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    html {
+      height: 100%;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0;
+    }
+    .nav-tabs::-webkit-scrollbar {
+      height: 4px;
+    }
+    .nav-tabs::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .nav-tabs::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 2px;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="min-h-full">
+  <div id="app" class="min-h-full flex flex-col"></div>
+  <script>
+    const defaultConfig = {
+      background_color: "#f8fafc",
+      surface_color: "#ffffff",
+      text_color: "#1e293b",
+      primary_action_color: "#3b82f6",
+      secondary_action_color: "#64748b",
+      font_family: "Inter",
+      font_size: 16,
+      dashboard_title: "Admin Dashboard",
+      welcome_message: "Welcome to the Admin Panel"
+    };
+
+    let currentData = [];
+    let activeTab = 'overview';
+
+    const dataHandler = {
+      onDataChanged(data) {
+        currentData = data;
+        renderContent();
+      }
+    };
+
+    async function onConfigChange(config) {
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontStack = 'system-ui, -apple-system, sans-serif';
+      const baseSize = config.font_size || defaultConfig.font_size;
+      const bgColor = config.background_color || defaultConfig.background_color;
+      const surfaceColor = config.surface_color || defaultConfig.surface_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
+      const secondaryColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+
+      document.body.style.backgroundColor = bgColor;
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      document.body.style.color = textColor;
+
+      const header = document.getElementById('header');
+      if (header) {
+        header.style.backgroundColor = surfaceColor;
+        header.style.borderBottomColor = secondaryColor + '33';
+      }
+
+      const title = document.getElementById('dashboard-title');
+      if (title) {
+        title.textContent = config.dashboard_title || defaultConfig.dashboard_title;
+        title.style.fontSize = `${baseSize * 1.75}px`;
+        title.style.color = textColor;
+      }
+
+      const welcome = document.getElementById('welcome-message');
+      if (welcome) {
+        welcome.textContent = config.welcome_message || defaultConfig.welcome_message;
+        welcome.style.fontSize = `${baseSize * 0.875}px`;
+        welcome.style.color = secondaryColor;
+      }
+
+      const tabs = document.querySelectorAll('.tab-button');
+      tabs.forEach(tab => {
+        tab.style.fontSize = `${baseSize * 0.875}px`;
+        if (tab.classList.contains('active')) {
+          tab.style.backgroundColor = primaryColor;
+          tab.style.color = '#ffffff';
+        } else {
+          tab.style.backgroundColor = 'transparent';
+          tab.style.color = secondaryColor;
+        }
+      });
+
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.style.backgroundColor = surfaceColor;
+        card.style.borderColor = secondaryColor + '33';
+      });
+
+      const labels = document.querySelectorAll('.form-label');
+      labels.forEach(label => {
+        label.style.fontSize = `${baseSize * 0.875}px`;
+        label.style.color = textColor;
+      });
+
+      const inputs = document.querySelectorAll('input, select, textarea');
+      inputs.forEach(input => {
+        input.style.fontSize = `${baseSize}px`;
+        input.style.backgroundColor = surfaceColor;
+        input.style.borderColor = secondaryColor + '66';
+        input.style.color = textColor;
+      });
+
+      const primaryButtons = document.querySelectorAll('.btn-primary');
+      primaryButtons.forEach(btn => {
+        btn.style.backgroundColor = primaryColor;
+        btn.style.fontSize = `${baseSize * 0.875}px`;
+      });
+
+      const secondaryButtons = document.querySelectorAll('.btn-secondary');
+      secondaryButtons.forEach(btn => {
+        btn.style.backgroundColor = secondaryColor;
+        btn.style.fontSize = `${baseSize * 0.875}px`;
+      });
+
+      const tableHeaders = document.querySelectorAll('.table-header');
+      tableHeaders.forEach(th => {
+        th.style.backgroundColor = surfaceColor;
+        th.style.color = textColor;
+        th.style.fontSize = `${baseSize * 0.875}px`;
+      });
+
+      const tableRows = document.querySelectorAll('.table-row');
+      tableRows.forEach(row => {
+        row.style.fontSize = `${baseSize * 0.875}px`;
+        row.style.color = textColor;
+      });
+
+      const statCards = document.querySelectorAll('.stat-card');
+      statCards.forEach(card => {
+        card.style.backgroundColor = surfaceColor;
+        card.style.borderColor = secondaryColor + '33';
+      });
+    }
+
+    function renderApp() {
+      const config = window.elementSdk?.config || defaultConfig;
+      const app = document.getElementById('app');
+      
+      app.innerHTML = `
+        <header id="header" class="border-b shadow-sm">
+          <div class="px-6 py-4">
+            <h1 id="dashboard-title" class="font-bold mb-1">${config.dashboard_title || defaultConfig.dashboard_title}</h1>
+            <p id="welcome-message" class="text-sm">${config.welcome_message || defaultConfig.welcome_message}</p>
+          </div>
+        </header>
+
+        <nav class="border-b bg-gray-50">
+          <div class="px-6">
+            <div class="nav-tabs">
+              <button class="tab-button active px-4 py-3 rounded-t-lg transition-all whitespace-nowrap font-medium" data-tab="overview">📊 Overview</button>
+              <button class="tab-button px-4 py-3 rounded-t-lg transition-all whitespace-nowrap font-medium" data-tab="places">📍 Places</button>
+              <button class="tab-button px-4 py-3 rounded-t-lg transition-all whitespace-nowrap font-medium" data-tab="categories">🏷️ Categories</button>
+              <button class="tab-button px-4 py-3 rounded-t-lg transition-all whitespace-nowrap font-medium" data-tab="users">👥 Users</button>
+              <button class="tab-button px-4 py-3 rounded-t-lg transition-all whitespace-nowrap font-medium" data-tab="trainers">🏋️ Trainers</button>
+              <button class="tab-button px-4 py-3 rounded-t-lg transition-all whitespace-nowrap font-medium" data-tab="bookings">📅 Bookings</button>
+              <button class="tab-button px-4 py-3 rounded-t-lg transition-all whitespace-nowrap font-medium" data-tab="feedback">💬 User Feedback</button>
+              <button class="tab-button px-4 py-3 rounded-t-lg transition-all whitespace-nowrap font-medium" data-tab="complaints">⚠️ User Complaints</button>
+            </div>
+          </div>
+        </nav>
+
+        <main class="flex-1 p-6 overflow-y-auto">
+          <!-- Overview Tab -->
+          <div id="overview-tab" class="tab-content active">
+            <div class="stats-grid mb-8">
+              <div class="stat-card border rounded-xl p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h3 class="text-lg font-semibold mb-1">Total Places</h3>
+                    <p id="places-count" class="text-3xl font-bold text-blue-600">0</p>
+                  </div>
+                  <div class="text-4xl">📍</div>
+                </div>
+              </div>
+              <div class="stat-card border rounded-xl p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h3 class="text-lg font-semibold mb-1">Categories</h3>
+                    <p id="categories-count" class="text-3xl font-bold text-green-600">0</p>
+                  </div>
+                  <div class="text-4xl">🏷️</div>
+                </div>
+              </div>
+              <div class="stat-card border rounded-xl p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h3 class="text-lg font-semibold mb-1">Active Trainers</h3>
+                    <p id="trainers-count" class="text-3xl font-bold text-purple-600">0</p>
+                  </div>
+                  <div class="text-4xl">🏋️</div>
+                </div>
+              </div>
+              <div class="stat-card border rounded-xl p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h3 class="text-lg font-semibold mb-1">Total Bookings</h3>
+                    <p id="bookings-count" class="text-3xl font-bold text-orange-600">0</p>
+                  </div>
+                  <div class="text-4xl">📅</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="card border rounded-xl p-6 shadow-sm">
+                <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                  💬 Recent User Feedback
+                </h3>
+                <div id="recent-feedback"></div>
+              </div>
+              <div class="card border rounded-xl p-6 shadow-sm">
+                <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                  ⚠️ Pending User Complaints
+                </h3>
+                <div id="pending-complaints"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Places Tab -->
+          <div id="places-tab" class="tab-content">
+            <div class="card border rounded-xl p-6 mb-6 shadow-sm">
+              <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                📍 Add New Place
+              </h2>
+              <form id="place-form" class="space-y-4">
+                <div>
+                  <label for="place-name" class="form-label block mb-2 font-medium">Place Name</label>
+                  <input type="text" id="place-name" required placeholder="Enter place name" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <button type="submit" class="btn-primary text-white px-6 py-3 rounded-lg hover:opacity-90 transition-opacity font-medium">Add Place</button>
+              </form>
+            </div>
+            <div id="places-list"></div>
+          </div>
+
+          <!-- Categories Tab -->
+          <div id="categories-tab" class="tab-content">
+            <div class="card border rounded-xl p-6 mb-6 shadow-sm">
+              <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                🏷️ Add New Category
+              </h2>
+              <form id="category-form" class="space-y-4">
+                <div>
+                  <label for="category-name" class="form-label block mb-2 font-medium">Category Name</label>
+                  <input type="text" id="category-name" required placeholder="Enter category name" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <button type="submit" class="btn-primary text-white px-6 py-3 rounded-lg hover:opacity-90 transition-opacity font-medium">Add Category</button>
+              </form>
+            </div>
+            <div id="categories-list"></div>
+          </div>
+
+          <!-- Users Tab -->
+          <div id="users-tab" class="tab-content">
+            <div class="card border rounded-xl p-6 shadow-sm">
+              <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                👥 Registered Users
+              </h2>
+              <div id="users-list">
+                <div class="text-center py-12">
+                  <div class="text-6xl mb-4">👥</div>
+                  <h3 class="text-xl font-semibold mb-2">User Management</h3>
+                  <p class="text-gray-500 max-w-md mx-auto">Connect to your user database to display and manage registered users. This section will show user profiles, registration dates, and activity status.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trainers Tab -->
+          <div id="trainers-tab" class="tab-content">
+            <div class="card border rounded-xl p-6 mb-6 shadow-sm">
+              <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                🏋️ Register New Trainer
+              </h2>
+              <form id="trainer-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="trainer-name" class="form-label block mb-2 font-medium">Full Name</label>
+                  <input type="text" id="trainer-name" required placeholder="Enter trainer's full name" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label for="trainer-email" class="form-label block mb-2 font-medium">Email Address</label>
+                  <input type="email" id="trainer-email" required placeholder="trainer@example.com" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label for="trainer-phone" class="form-label block mb-2 font-medium">Phone Number</label>
+                  <input type="tel" id="trainer-phone" required placeholder="+1 (555) 123-4567" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label for="trainer-specialty" class="form-label block mb-2 font-medium">Qualification</label>
+                  <input type="text" id="trainer-specialty" required placeholder="qualification of trainer" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div class="md:col-span-2">
+                  <button type="submit" class="btn-primary text-white px-6 py-3 rounded-lg hover:opacity-90 transition-opacity font-medium">Register Trainer</button>
+                </div>
+              </form>
+            </div>
+            <div id="trainers-list"></div>
+          </div>
+
+          <!-- Bookings Tab -->
+          <div id="bookings-tab" class="tab-content">
+            <div class="card border rounded-xl p-6 mb-6 shadow-sm">
+              <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                📅 Add Sample Booking
+              </h2>
+              <form id="booking-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div>
+                  <label for="customer-name" class="form-label block mb-2 font-medium">Customer Name</label>
+                  <input type="text" id="customer-name" required placeholder="Enter customer name" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label for="booking-trainer" class="form-label block mb-2 font-medium">Trainer</label>
+                  <input type="text" id="booking-trainer" required placeholder="Select trainer" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label for="booking-place" class="form-label block mb-2 font-medium">Place</label>
+                  <input type="text" id="booking-place" required placeholder="Select place" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label for="booking-date" class="form-label block mb-2 font-medium">Date</label>
+                  <input type="date" id="booking-date" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label for="booking-time" class="form-label block mb-2 font-medium">Time</label>
+                  <input type="time" id="booking-time" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label for="booking-status" class="form-label block mb-2 font-medium">Status</label>
+                  <select id="booking-status" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option value="confirmed">✅ Confirmed</option>
+                    <option value="pending">⏳ Pending</option>
+                    <option value="cancelled">❌ Cancelled</option>
+                  </select>
+                </div>
+                <div class="md:col-span-2 lg:col-span-3">
+                  <button type="submit" class="btn-primary text-white px-6 py-3 rounded-lg hover:opacity-90 transition-opacity font-medium">Add Booking</button>
+                </div>
+              </form>
+            </div>
+            <div id="bookings-list"></div>
+          </div>
+
+          <!-- User Feedback Tab -->
+          <div id="feedback-tab" class="tab-content">
+            <div class="card border rounded-xl p-6 mb-6 shadow-sm">
+              <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                💬 Add Sample User Feedback
+              </h2>
+              <form id="feedback-form" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label for="feedback-customer" class="form-label block mb-2 font-medium">Customer Name</label>
+                    <input type="text" id="feedback-customer" required placeholder="Enter customer name" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                  </div>
+                  <div>
+                    <label for="feedback-rating" class="form-label block mb-2 font-medium">Rating</label>
+                    <select id="feedback-rating" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                      <option value="5">⭐⭐⭐⭐⭐ Excellent (5 stars)</option>
+                      <option value="4">⭐⭐⭐⭐ Good (4 stars)</option>
+                      <option value="3">⭐⭐⭐ Average (3 stars)</option>
+                      <option value="2">⭐⭐ Poor (2 stars)</option>
+                      <option value="1">⭐ Very Poor (1 star)</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label for="feedback-text" class="form-label block mb-2 font-medium">User Feedback</label>
+                  <textarea id="feedback-text" required rows="4" placeholder="Enter the user's feedback comments..." class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"></textarea>
+                </div>
+                <button type="submit" class="btn-primary text-white px-6 py-3 rounded-lg hover:opacity-90 transition-opacity font-medium">Add User Feedback</button>
+              </form>
+            </div>
+            <div id="feedback-list"></div>
+          </div>
+
+          <!-- User Complaints Tab -->
+          <div id="complaints-tab" class="tab-content">
+            <div class="card border rounded-xl p-6 mb-6 shadow-sm">
+              <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                ⚠️ Add Sample User Complaint
+              </h2>
+              <form id="complaint-form" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label for="complaint-customer" class="form-label block mb-2 font-medium">Customer Name</label>
+                    <input type="text" id="complaint-customer" required placeholder="Enter customer name" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                  </div>
+                  <div>
+                    <label for="complaint-priority" class="form-label block mb-2 font-medium">Priority Level</label>
+                    <select id="complaint-priority" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                      <option value="high">🔴 High Priority</option>
+                      <option value="medium">🟡 Medium Priority</option>
+                      <option value="low">🟢 Low Priority</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label for="complaint-text" class="form-label block mb-2 font-medium">Complaint Details</label>
+                  <textarea id="complaint-text" required rows="4" placeholder="Enter the user's complaint details..." class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"></textarea>
+                </div>
+                <button type="submit" class="btn-primary text-white px-6 py-3 rounded-lg hover:opacity-90 transition-opacity font-medium">Add User Complaint</button>
+              </form>
+            </div>
+            <div id="complaints-list"></div>
+          </div>
+        </main>
+      `;
+
+      setupEventListeners();
+      onConfigChange(config);
+    }
+
+    function setupEventListeners() {
+      const tabButtons = document.querySelectorAll('.tab-button');
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          activeTab = button.dataset.tab;
+          switchTab(activeTab);
+        });
+      });
+
+      document.getElementById('place-form').addEventListener('submit', handlePlaceSubmit);
+      document.getElementById('category-form').addEventListener('submit', handleCategorySubmit);
+      document.getElementById('trainer-form').addEventListener('submit', handleTrainerSubmit);
+      document.getElementById('booking-form').addEventListener('submit', handleBookingSubmit);
+      document.getElementById('feedback-form').addEventListener('submit', handleFeedbackSubmit);
+      document.getElementById('complaint-form').addEventListener('submit', handleComplaintSubmit);
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(`${tab}-tab`).classList.add('active');
+
+      onConfigChange(window.elementSdk?.config || defaultConfig);
+    }
+
+    async function handlePlaceSubmit(e) {
+      e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.classList.add('loading');
+      submitBtn.textContent = 'Adding...';
+
+      const name = document.getElementById('place-name').value;
+      
+      if (currentData.length >= 999) {
+        showMessage('Maximum limit of 999 items reached. Please delete some items first.');
+        submitBtn.classList.remove('loading');
+        submitBtn.textContent = 'Add Place';
+        return;
+      }
+
+      const result = await window.dataSdk.create({
+        id: Date.now().toString(),
+        type: 'place',
+        name: name,
+        createdAt: new Date().toISOString()
+      });
+
+      submitBtn.classList.remove('loading');
+      submitBtn.textContent = 'Add Place';
+
+      if (result.isOk) {
+        document.getElementById('place-name').value = '';
+        showSuccessMessage('Place added successfully!');
+      } else {
+        showMessage('Failed to add place. Please try again.');
+      }
+    }
+
+    async function handleCategorySubmit(e) {
+      e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.classList.add('loading');
+      submitBtn.textContent = 'Adding...';
+
+      const name = document.getElementById('category-name').value;
+      
+      if (currentData.length >= 999) {
+        showMessage('Maximum limit of 999 items reached. Please delete some items first.');
+        submitBtn.classList.remove('loading');
+        submitBtn.textContent = 'Add Category';
+        return;
+      }
+
+      const result = await window.dataSdk.create({
+        id: Date.now().toString(),
+        type: 'category',
+        name: name,
+        createdAt: new Date().toISOString()
+      });
+
+      submitBtn.classList.remove('loading');
+      submitBtn.textContent = 'Add Category';
+
+      if (result.isOk) {
+        document.getElementById('category-name').value = '';
+        showSuccessMessage('Category added successfully!');
+      } else {
+        showMessage('Failed to add category. Please try again.');
+      }
+    }
+
+    async function handleTrainerSubmit(e) {
+      e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.classList.add('loading');
+      submitBtn.textContent = 'Registering...';
+
+      const name = document.getElementById('trainer-name').value;
+      const email = document.getElementById('trainer-email').value;
+      const phone = document.getElementById('trainer-phone').value;
+      const specialty = document.getElementById('trainer-specialty').value;
+      
+      if (currentData.length >= 999) {
+        showMessage('Maximum limit of 999 items reached. Please delete some items first.');
+        submitBtn.classList.remove('loading');
+        submitBtn.textContent = 'Register Trainer';
+        return;
+      }
+
+      const result = await window.dataSdk.create({
+        id: Date.now().toString(),
+        type: 'trainer',
+        name: name,
+        email: email,
+        phone: phone,
+        specialty: specialty,
+        status: 'active',
+        createdAt: new Date().toISOString()
+      });
+
+      submitBtn.classList.remove('loading');
+      submitBtn.textContent = 'Register Trainer';
+
+      if (result.isOk) {
+        document.getElementById('trainer-name').value = '';
+        document.getElementById('trainer-email').value = '';
+        document.getElementById('trainer-phone').value = '';
+        document.getElementById('trainer-specialty').value = '';
+        showSuccessMessage('Trainer registered successfully!');
+      } else {
+        showMessage('Failed to register trainer. Please try again.');
+      }
+    }
+
+    async function handleBookingSubmit(e) {
+      e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.classList.add('loading');
+      submitBtn.textContent = 'Adding...';
+
+      if (currentData.length >= 999) {
+        showMessage('Maximum limit of 999 items reached. Please delete some items first.');
+        submitBtn.classList.remove('loading');
+        submitBtn.textContent = 'Add Booking';
+        return;
+      }
+
+      const result = await window.dataSdk.create({
+        id: Date.now().toString(),
+        type: 'booking',
+        customer_name: document.getElementById('customer-name').value,
+        trainer_name: document.getElementById('booking-trainer').value,
+        place_name: document.getElementById('booking-place').value,
+        booking_date: document.getElementById('booking-date').value,
+        booking_time: document.getElementById('booking-time').value,
+        status: document.getElementById('booking-status').value,
+        createdAt: new Date().toISOString()
+      });
+
+      submitBtn.classList.remove('loading');
+      submitBtn.textContent = 'Add Booking';
+
+      if (result.isOk) {
+        e.target.reset();
+        showSuccessMessage('Booking added successfully!');
+      } else {
+        showMessage('Failed to add booking. Please try again.');
+      }
+    }
+
+    async function handleFeedbackSubmit(e) {
+      e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.classList.add('loading');
+      submitBtn.textContent = 'Adding...';
+
+      if (currentData.length >= 999) {
+        showMessage('Maximum limit of 999 items reached. Please delete some items first.');
+        submitBtn.classList.remove('loading');
+        submitBtn.textContent = 'Add User Feedback';
+        return;
+      }
+
+      const result = await window.dataSdk.create({
+        id: Date.now().toString(),
+        type: 'feedback',
+        customer_name: document.getElementById('feedback-customer').value,
+        rating: parseInt(document.getElementById('feedback-rating').value),
+        feedback_text: document.getElementById('feedback-text').value,
+        createdAt: new Date().toISOString()
+      });
+
+      submitBtn.classList.remove('loading');
+      submitBtn.textContent = 'Add User Feedback';
+
+      if (result.isOk) {
+        e.target.reset();
+        showSuccessMessage('User feedback added successfully!');
+      } else {
+        showMessage('Failed to add feedback. Please try again.');
+      }
+    }
+
+    async function handleComplaintSubmit(e) {
+      e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.classList.add('loading');
+      submitBtn.textContent = 'Adding...';
+
+      if (currentData.length >= 999) {
+        showMessage('Maximum limit of 999 items reached. Please delete some items first.');
+        submitBtn.classList.remove('loading');
+        submitBtn.textContent = 'Add User Complaint';
+        return;
+      }
+
+      const result = await window.dataSdk.create({
+        id: Date.now().toString(),
+        type: 'complaint',
+        customer_name: document.getElementById('complaint-customer').value,
+        complaint_text: document.getElementById('complaint-text').value,
+        priority: document.getElementById('complaint-priority').value,
+        resolved: false,
+        createdAt: new Date().toISOString()
+      });
+
+      submitBtn.classList.remove('loading');
+      submitBtn.textContent = 'Add User Complaint';
+
+      if (result.isOk) {
+        e.target.reset();
+        showSuccessMessage('User complaint added successfully!');
+      } else {
+        showMessage('Failed to add complaint. Please try again.');
+      }
+    }
+
+    async function deleteItem(item) {
+      const result = await window.dataSdk.delete(item);
+      if (!result.isOk) {
+        showMessage('Failed to delete item. Please try again.');
+      } else {
+        showSuccessMessage('Item deleted successfully!');
+      }
+    }
+
+    async function toggleComplaintResolved(complaint) {
+      const updatedComplaint = { ...complaint, resolved: !complaint.resolved };
+      const result = await window.dataSdk.update(updatedComplaint);
+      if (!result.isOk) {
+        showMessage('Failed to update complaint. Please try again.');
+      } else {
+        showSuccessMessage(`Complaint marked as ${updatedComplaint.resolved ? 'resolved' : 'pending'}!`);
+      }
+    }
+
+    function renderContent() {
+      renderOverview();
+      renderPlaces();
+      renderCategories();
+      renderTrainers();
+      renderBookings();
+      renderFeedback();
+      renderComplaints();
+    }
+
+    function renderOverview() {
+      const places = currentData.filter(item => item.type === 'place');
+      const categories = currentData.filter(item => item.type === 'category');
+      const trainers = currentData.filter(item => item.type === 'trainer');
+      const bookings = currentData.filter(item => item.type === 'booking');
+      const feedback = currentData.filter(item => item.type === 'feedback');
+      const complaints = currentData.filter(item => item.type === 'complaint');
+
+      document.getElementById('places-count').textContent = places.length;
+      document.getElementById('categories-count').textContent = categories.length;
+      document.getElementById('trainers-count').textContent = trainers.length;
+      document.getElementById('bookings-count').textContent = bookings.length;
+
+      // Recent user feedback
+      const recentFeedback = feedback.slice(-3);
+      const feedbackContainer = document.getElementById('recent-feedback');
+      if (recentFeedback.length === 0) {
+        feedbackContainer.innerHTML = `
+          <div class="text-center py-8">
+            <div class="text-4xl mb-2">💬</div>
+            <p class="text-gray-500">No user feedback yet</p>
+          </div>
+        `;
+      } else {
+        feedbackContainer.innerHTML = recentFeedback.map(fb => `
+          <div class="border-b pb-3 mb-3 last:border-b-0 last:pb-0 last:mb-0">
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-medium">${fb.customer_name}</span>
+              <span class="text-yellow-500 text-lg">${'⭐'.repeat(fb.rating)}</span>
+            </div>
+            <p class="text-sm text-gray-600">${fb.feedback_text.substring(0, 120)}${fb.feedback_text.length > 120 ? '...' : ''}</p>
+            <p class="text-xs text-gray-400 mt-1">${new Date(fb.createdAt).toLocaleDateString()}</p>
+          </div>
+        `).join('');
+      }
+
+      // Pending user complaints
+      const pendingComplaints = complaints.filter(c => !c.resolved).slice(-3);
+      const complaintsContainer = document.getElementById('pending-complaints');
+      if (pendingComplaints.length === 0) {
+        complaintsContainer.innerHTML = `
+          <div class="text-center py-8">
+            <div class="text-4xl mb-2">✅</div>
+            <p class="text-gray-500">No pending user complaints</p>
+          </div>
+        `;
+      } else {
+        complaintsContainer.innerHTML = pendingComplaints.map(complaint => `
+          <div class="border-b pb-3 mb-3 last:border-b-0 last:pb-0 last:mb-0">
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-medium">${complaint.customer_name}</span>
+              <span class="px-2 py-1 text-xs rounded ${
+                complaint.priority === 'high' ? 'bg-red-100 text-red-800' : 
+                complaint.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' : 
+                'bg-green-100 text-green-800'
+              }">${complaint.priority}</span>
+            </div>
+            <p class="text-sm text-gray-600">${complaint.complaint_text.substring(0, 120)}${complaint.complaint_text.length > 120 ? '...' : ''}</p>
+            <p class="text-xs text-gray-400 mt-1">${new Date(complaint.createdAt).toLocaleDateString()}</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    function renderPlaces() {
+      const places = currentData.filter(item => item.type === 'place');
+      const container = document.getElementById('places-list');
+      
+      if (places.length === 0) {
+        container.innerHTML = `
+          <div class="card border rounded-xl p-8 shadow-sm text-center">
+            <div class="text-6xl mb-4">📍</div>
+            <h3 class="text-xl font-semibold mb-2">No Places Added Yet</h3>
+            <p class="text-gray-500">Start by adding your first place using the form above.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="card border rounded-xl overflow-hidden shadow-sm">
+          <div class="bg-gray-50 px-6 py-4 border-b">
+            <h3 class="text-lg font-semibold">All Places (${places.length})</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b bg-gray-50">
+                  <th class="table-header text-left p-4 font-semibold">Place Name</th>
+                  <th class="table-header text-left p-4 font-semibold">Date Added</th>
+                  <th class="table-header text-right p-4 font-semibold">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${places.map(place => `
+                  <tr class="table-row border-b last:border-b-0 hover:bg-gray-50 transition-colors">
+                    <td class="p-4">
+                      <div class="flex items-center gap-3">
+                        <span class="text-2xl">📍</span>
+                        <span class="font-medium">${place.name}</span>
+                      </div>
+                    </td>
+                    <td class="p-4 text-gray-600">${new Date(place.createdAt).toLocaleDateString()}</td>
+                    <td class="p-4 text-right">
+                      <button onclick="deleteItem(currentData.find(i => i.id === '${place.id}'))" class="btn-secondary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">Delete</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCategories() {
+      const categories = currentData.filter(item => item.type === 'category');
+      const container = document.getElementById('categories-list');
+      
+      if (categories.length === 0) {
+        container.innerHTML = `
+          <div class="card border rounded-xl p-8 shadow-sm text-center">
+            <div class="text-6xl mb-4">🏷️</div>
+            <h3 class="text-xl font-semibold mb-2">No Categories Added Yet</h3>
+            <p class="text-gray-500">Start by adding your first category using the form above.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="card border rounded-xl overflow-hidden shadow-sm">
+          <div class="bg-gray-50 px-6 py-4 border-b">
+            <h3 class="text-lg font-semibold">All Categories (${categories.length})</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b bg-gray-50">
+                  <th class="table-header text-left p-4 font-semibold">Category Name</th>
+                  <th class="table-header text-left p-4 font-semibold">Date Added</th>
+                  <th class="table-header text-right p-4 font-semibold">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${categories.map(category => `
+                  <tr class="table-row border-b last:border-b-0 hover:bg-gray-50 transition-colors">
+                    <td class="p-4">
+                      <div class="flex items-center gap-3">
+                        <span class="text-2xl">🏷️</span>
+                        <span class="font-medium">${category.name}</span>
+                      </div>
+                    </td>
+                    <td class="p-4 text-gray-600">${new Date(category.createdAt).toLocaleDateString()}</td>
+                    <td class="p-4 text-right">
+                      <button onclick="deleteItem(currentData.find(i => i.id === '${category.id}'))" class="btn-secondary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">Delete</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTrainers() {
+      const trainers = currentData.filter(item => item.type === 'trainer');
+      const container = document.getElementById('trainers-list');
+      
+      if (trainers.length === 0) {
+        container.innerHTML = `
+          <div class="card border rounded-xl p-8 shadow-sm text-center">
+            <div class="text-6xl mb-4">🏋️</div>
+            <h3 class="text-xl font-semibold mb-2">No Trainers Registered Yet</h3>
+            <p class="text-gray-500">Start by registering your first trainer using the form above.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="card border rounded-xl overflow-hidden shadow-sm">
+          <div class="bg-gray-50 px-6 py-4 border-b">
+            <h3 class="text-lg font-semibold">Registered Trainers (${trainers.length})</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b bg-gray-50">
+                  <th class="table-header text-left p-4 font-semibold">Trainer</th>
+                  <th class="table-header text-left p-4 font-semibold">Contact</th>
+                  <th class="table-header text-left p-4 font-semibold">Specialty</th>
+                  <th class="table-header text-left p-4 font-semibold">Status</th>
+                  <th class="table-header text-right p-4 font-semibold">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${trainers.map(trainer => `
+                  <tr class="table-row border-b last:border-b-0 hover:bg-gray-50 transition-colors">
+                    <td class="p-4">
+                      <div class="flex items-center gap-3">
+                        <span class="text-2xl">🏋️</span>
+                        <div>
+                          <div class="font-medium">${trainer.name}</div>
+                          <div class="text-sm text-gray-500">${trainer.email}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="p-4 text-gray-600">${trainer.phone}</td>
+                    <td class="p-4">
+                      <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">${trainer.specialty}</span>
+                    </td>
+                    <td class="p-4">
+                      <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">${trainer.status}</span>
+                    </td>
+                    <td class="p-4 text-right">
+                      <button onclick="deleteItem(currentData.find(i => i.id === '${trainer.id}'))" class="btn-secondary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">Remove</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderBookings() {
+      const bookings = currentData.filter(item => item.type === 'booking');
+      const container = document.getElementById('bookings-list');
+      
+      if (bookings.length === 0) {
+        container.innerHTML = `
+          <div class="card border rounded-xl p-8 shadow-sm text-center">
+            <div class="text-6xl mb-4">📅</div>
+            <h3 class="text-xl font-semibold mb-2">No Bookings Yet</h3>
+            <p class="text-gray-500">Bookings will appear here once customers start making reservations.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="card border rounded-xl overflow-hidden shadow-sm">
+          <div class="bg-gray-50 px-6 py-4 border-b">
+            <h3 class="text-lg font-semibold">All Bookings (${bookings.length})</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b bg-gray-50">
+                  <th class="table-header text-left p-4 font-semibold">Customer</th>
+                  <th class="table-header text-left p-4 font-semibold">Trainer</th>
+                  <th class="table-header text-left p-4 font-semibold">Place</th>
+                  <th class="table-header text-left p-4 font-semibold">Date & Time</th>
+                  <th class="table-header text-left p-4 font-semibold">Status</th>
+                  <th class="table-header text-right p-4 font-semibold">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${bookings.map(booking => `
+                  <tr class="table-row border-b last:border-b-0 hover:bg-gray-50 transition-colors">
+                    <td class="p-4">
+                      <div class="flex items-center gap-3">
+                        <span class="text-2xl">👤</span>
+                        <span class="font-medium">${booking.customer_name}</span>
+                      </div>
+                    </td>
+                    <td class="p-4 text-gray-600">${booking.trainer_name}</td>
+                    <td class="p-4 text-gray-600">${booking.place_name}</td>
+                    <td class="p-4">
+                      <div class="text-sm">
+                        <div class="font-medium">${new Date(booking.booking_date).toLocaleDateString()}</div>
+                        <div class="text-gray-500">${booking.booking_time}</div>
+                      </div>
+                    </td>
+                    <td class="p-4">
+                      <span class="px-3 py-1 text-sm rounded-full font-medium ${
+                        booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                        booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }">
+                        ${booking.status === 'confirmed' ? '✅' : booking.status === 'pending' ? '⏳' : '❌'} ${booking.status}
+                      </span>
+                    </td>
+                    <td class="p-4 text-right">
+                      <button onclick="deleteItem(currentData.find(i => i.id === '${booking.id}'))" class="btn-secondary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">Delete</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderFeedback() {
+      const feedback = currentData.filter(item => item.type === 'feedback');
+      const container = document.getElementById('feedback-list');
+      
+      if (feedback.length === 0) {
+        container.innerHTML = `
+          <div class="card border rounded-xl p-8 shadow-sm text-center">
+            <div class="text-6xl mb-4">💬</div>
+            <h3 class="text-xl font-semibold mb-2">No User Feedback Yet</h3>
+            <p class="text-gray-500">User feedback and reviews will appear here once customers start sharing their experiences.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="card border rounded-xl overflow-hidden shadow-sm">
+          <div class="bg-gray-50 px-6 py-4 border-b">
+            <h3 class="text-lg font-semibold">User Feedback & Reviews (${feedback.length})</h3>
+          </div>
+          <div class="space-y-4 p-6">
+            ${feedback.map(fb => `
+              <div class="border rounded-xl p-6 hover:shadow-md transition-shadow">
+                <div class="flex justify-between items-start mb-4">
+                  <div class="flex items-center gap-3">
+                    <span class="text-3xl">👤</span>
+                    <div>
+                      <h4 class="font-semibold text-lg">${fb.customer_name}</h4>
+                      <p class="text-sm text-gray-500">${new Date(fb.createdAt).toLocaleDateString()}</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl">${'⭐'.repeat(fb.rating)}${'☆'.repeat(5-fb.rating)}</span>
+                    <span class="text-sm font-medium text-gray-600">(${fb.rating}/5)</span>
+                  </div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                  <p class="text-gray-700 leading-relaxed">${fb.feedback_text}</p>
+                </div>
+                <div class="flex justify-end">
+                  <button onclick="deleteItem(currentData.find(i => i.id === '${fb.id}'))" class="btn-secondary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">Delete Feedback</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderComplaints() {
+      const complaints = currentData.filter(item => item.type === 'complaint');
+      const container = document.getElementById('complaints-list');
+      
+      if (complaints.length === 0) {
+        container.innerHTML = `
+          <div class="card border rounded-xl p-8 shadow-sm text-center">
+            <div class="text-6xl mb-4">✅</div>
+            <h3 class="text-xl font-semibold mb-2">No User Complaints</h3>
+            <p class="text-gray-500">Great! No user complaints have been reported. Customer complaints will appear here if any issues arise.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="card border rounded-xl overflow-hidden shadow-sm">
+          <div class="bg-gray-50 px-6 py-4 border-b">
+            <h3 class="text-lg font-semibold">User Complaints (${complaints.length})</h3>
+          </div>
+          <div class="space-y-4 p-6">
+            ${complaints.map(complaint => `
+              <div class="border rounded-xl p-6 ${complaint.resolved ? 'bg-green-50 border-green-200' : 'bg-white'} hover:shadow-md transition-all">
+                <div class="flex justify-between items-start mb-4">
+                  <div class="flex items-center gap-3">
+                    <span class="text-3xl">👤</span>
+                    <div>
+                      <h4 class="font-semibold text-lg">${complaint.customer_name}</h4>
+                      <p class="text-sm text-gray-500">${new Date(complaint.createdAt).toLocaleDateString()}</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 text-sm rounded-full font-medium ${
+                      complaint.priority === 'high' ? 'bg-red-100 text-red-800' :
+                      complaint.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-green-100 text-green-800'
+                    }">
+                      ${complaint.priority === 'high' ? '🔴' : complaint.priority === 'medium' ? '🟡' : '🟢'} ${complaint.priority} priority
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                  <p class="text-gray-700 leading-relaxed">${complaint.complaint_text}</p>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                  <span class="px-4 py-2 text-sm rounded-full font-medium ${complaint.resolved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
+                    ${complaint.resolved ? '✅ Resolved' : '⏳ Pending Resolution'}
+                  </span>
+                  <div class="space-x-3">
+                    <button onclick="toggleComplaintResolved(currentData.find(i => i.id === '${complaint.id}'))" class="btn-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">
+                      ${complaint.resolved ? 'Mark as Pending' : 'Mark as Resolved'}
+                    </button>
+                    <button onclick="deleteItem(currentData.find(i => i.id === '${complaint.id}'))" class="btn-secondary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">Delete</button>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function showMessage(message) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+      messageDiv.textContent = message;
+      document.body.appendChild(messageDiv);
+      setTimeout(() => messageDiv.remove(), 4000);
+    }
+
+    function showSuccessMessage(message) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+      messageDiv.textContent = message;
+      document.body.appendChild(messageDiv);
+      setTimeout(() => messageDiv.remove(), 3000);
+    }
+
+    async function init() {
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities: (config) => ({
+            recolorables: [
+              {
+                get: () => config.background_color || defaultConfig.background_color,
+                set: (value) => {
+                  config.background_color = value;
+                  window.elementSdk.setConfig({ background_color: value });
+                }
+              },
+              {
+                get: () => config.surface_color || defaultConfig.surface_color,
+                set: (value) => {
+                  config.surface_color = value;
+                  window.elementSdk.setConfig({ surface_color: value });
+                }
+              },
+              {
+                get: () => config.text_color || defaultConfig.text_color,
+                set: (value) => {
+                  config.text_color = value;
+                  window.elementSdk.setConfig({ text_color: value });
+                }
+              },
+              {
+                get: () => config.primary_action_color || defaultConfig.primary_action_color,
+                set: (value) => {
+                  config.primary_action_color = value;
+                  window.elementSdk.setConfig({ primary_action_color: value });
+                }
+              },
+              {
+                get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+                set: (value) => {
+                  config.secondary_action_color = value;
+                  window.elementSdk.setConfig({ secondary_action_color: value });
+                }
+              }
+            ],
+            borderables: [],
+            fontEditable: {
+              get: () => config.font_family || defaultConfig.font_family,
+              set: (value) => {
+                config.font_family = value;
+                window.elementSdk.setConfig({ font_family: value });
+              }
+            },
+            fontSizeable: {
+              get: () => config.font_size || defaultConfig.font_size,
+              set: (value) => {
+                config.font_size = value;
+                window.elementSdk.setConfig({ font_size: value });
+              }
+            }
+          }),
+          mapToEditPanelValues: (config) => new Map([
+            ["dashboard_title", config.dashboard_title || defaultConfig.dashboard_title],
+            ["welcome_message", config.welcome_message || defaultConfig.welcome_message]
+          ])
+        });
+      }
+
+      if (window.dataSdk) {
+        const initResult = await window.dataSdk.init(dataHandler);
+        if (!initResult.isOk) {
+          console.error("Failed to initialize data SDK");
+        }
+      }
+
+      renderApp();
+    }
+
+    init();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99a20b81e7da897b',t:'MTc2MjQwNTQxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

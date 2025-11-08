@@ -27,6 +27,16 @@ urlpatterns = [
     path('',views.indexp,name='index'),
     path('login',views.loginp,name='login'),
 
+    path('admin_homepage',views.adminhp,name='admin_homepage'),
+
+    path('user_registration',views.userreg,name='user_registration'),
+    path('user_homepage',views.userhp,name='user_homepage'),
+    path('user_viewbookings',views.userviewbook,name='user_viewbookings'),
+
+    path('trainer_homepage',views.trainerhp,name='trainer_homepage'),
+    path('trainer_viewbookings',views.trainerviewbook,name='trainer_viewbookings'),
+    
+
 
 ]
 
