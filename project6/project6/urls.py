@@ -35,6 +35,9 @@ urlpatterns = [
 
     path('trainer_homepage',views.trainerhp,name='trainer_homepage'),
     path('trainer_viewbookings',views.trainerviewbook,name='trainer_viewbookings'),
+
+
+    path('uview',views.uview,name='uview')
     
 
 

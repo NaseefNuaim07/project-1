@@ -58,3 +58,9 @@ def trainerviewbook(request):
     return render(request,'trainer_viewbookings.html')
 
 
+
+
+
+
+def uview(request):
+    return render(request,'uview.html')
