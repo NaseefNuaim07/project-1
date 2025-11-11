@@ -7,12 +7,12 @@ from django.contrib.auth import authenticate,login
 
 def loginp(request):
     if request.method=='POST':
-        username=request.POST.get('username')
+        email=request.POST.get('username')
         password=request.POST.get('password')
-        user=authenticate(request,username=username,password=password)
+        user=authenticate(request,username=email,password=password)
         if user is not None and user.is_superuser==False:
             login(request,user)
-            return redirect('user_home')
+            return redirect('admin_homepage')
         else:
             return render(request,'login.html',{'error':'invalid username or password'})
     else:
@@ -33,10 +33,10 @@ def userreg(request):
     if request.method == 'POST':
         name = request.POST['Name']
         gender = request.POST['Gender']
-        mobile = request.POST['Mobile']
+        contact = request.POST['Contact']
         email = request.POST['Email']
         password = request.POST['password']
-        data=User.objects.create_user(name=name,gender=gender,mobile=mobile,email=email,password=password)
+        data=User.objects.create_user(name=name,gender=gender,contact=contact,email=email,password=password)
         data.save()
         return HttpResponse('data submitted successfully')
     else:
@@ -44,6 +44,7 @@ def userreg(request):
     
 def userhp(request):
     return render(request,'user_homepage.html')
+
 def userviewbook(request):
     return render(request,'user_viewbookings.html')
 
@@ -51,16 +52,24 @@ def userviewbook(request):
 
 
 
-
+def trainerreg(request):
+    if request.method == 'POST':
+        name = request.POST['Name']
+        gender = request.POST['Gender']
+        contact = request.POST['Contact']
+        email = request.POST['Email']
+        password = request.POST['password']
+        data=User.objects.create_user(name=name,gender=gender,contact=contact,email=email,password=password)
+        data.save()
+        return HttpResponse('data submitted successfully')
+    else:
+        return render(request,'trainer_registration.html')
+    
 def trainerhp(request):
     return render(request,'trainer_homepage.html')
+
 def trainerviewbook(request):
     return render(request,'trainer_viewbookings.html')
 
 
 
-
-
-
-def uview(request):
-    return render(request,'uview.html')

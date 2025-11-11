@@ -59,10 +59,7 @@
               <nav class="site-navigation position-relative text-right" role="navigation">
                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none pl-0 d-lg-block">
                   <li class="active">
-                    <a href="/" class="nav-link text-left">Home</a>
-                  </li>
-                  <li>
-                    <a href="{% url 'login' %}" class="nav-link text-left">Login</a>
+                    <a href="{% url 'admin_homepage' %}" class="nav-link text-left">Home</a>
                   </li>
                 </ul>
                 </ul>
@@ -85,7 +82,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewUser</title>
+    <title>NewTrainer</title>
 </head>
 <body>
     
@@ -117,7 +114,6 @@
                 <td><input type="password" name="txtpwd" placeholder="Enter Password" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"></td>
             </tr>
             <tr>
-                
                 <td colspan="2" align="center">
                     <input type="submit" name="btnsubmit" value="Save">
                     <input type="reset" name="btncancel" value="Cancel">
@@ -125,6 +121,15 @@
             </tr>
         </table>
     </form>
+    <table align="center" border="1" style="margin-top: 5%;">
+        <tr>
+            <td>Name</td>
+            <td>Gender</td>
+            <td>Contact</td>
+            <td>Email</td>
+            <td>Password</td>
+        </tr>
+    </table>
 
     
 

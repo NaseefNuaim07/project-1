@@ -33,11 +33,12 @@ urlpatterns = [
     path('user_homepage',views.userhp,name='user_homepage'),
     path('user_viewbookings',views.userviewbook,name='user_viewbookings'),
 
+    path('trainer_registration',views.trainerreg,name='trainer_registration'),
     path('trainer_homepage',views.trainerhp,name='trainer_homepage'),
     path('trainer_viewbookings',views.trainerviewbook,name='trainer_viewbookings'),
 
 
-    path('uview',views.uview,name='uview')
+
     
 
 
