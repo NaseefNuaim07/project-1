@@ -44,7 +44,7 @@
 
       <!-- Profile Section -->
       <div class="col-6 col-lg-3 text-right ml-auto d-flex align-items-center justify-content-end">
-        <a href="{% url 'index' %}" class="d-flex align-items-center text-dark text-decoration-none">
+        <a href="{% url 'user_viewprofile' %}" class="d-flex align-items-center text-dark text-decoration-none">
           <img src="{% static 'Index/images/profile.jpg' %}" alt="Profile" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;">
           <span>View Profile</span>
         </a>
@@ -79,7 +79,7 @@
                   <a href="{% url 'index' %}" class="nav-link text-left">Home</a>
                 </li>
                 <li>
-                  <a href="services.html" class="nav-link text-left">View Bookings</a>
+                  <a href="{% url 'user_viewbookings' %}" class="nav-link text-left">View Bookings</a>
                 </li>
                 
               </ul>                                                                                                                                                                                                                                                                                          </ul>
@@ -95,7 +95,7 @@
     </div>
     
     <div class="hero-slide owl-carousel site-blocks-cover">
-      <div class="intro-section" style="background-image: url('Index/images/hero_1.jpg');">
+      <div class="intro-section" style="background-image: url('static/Index/images/hero_1.jpg');">
         <div class="container">
           <div class="row align-items-center">
             <div class="col-lg-7 ml-auto text-right" data-aos="fade-up">
@@ -107,7 +107,7 @@
         </div>
       </div>
 
-      <div class="intro-section" style="background-image: url('Index/images/hero_2.jpg');">
+      <div class="intro-section" style="background-image: url('static/Index/images/hero_2.jpg');">
         <div class="container">
           <div class="row align-items-center">
             <div class="col-lg-7 mx-auto text-center" data-aos="fade-up">
@@ -173,7 +173,7 @@
       </div>
     </div>
 
-    <div class="site-section bg-image overlay" style="background-image: url('Index/images/hero_1.jpg');">
+    <div class="site-section bg-image overlay" style="background-image: url('static/Index/images/hero_1.jpg');">
       <div class="container">
         <div class="row">
           <div class="col">
@@ -329,6 +329,43 @@
             </div>
           </div>
 
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <p><img src="{% static 'Index/images/hero_1.jpg' %}" alt="Image" class="img-fluid"></p>
+          </div>
+          <div class="col-md-5">
+            <span class="text-serif text-primary">Book Now</span>
+            <h3 class="heading-92913 text-black">Book A Dive</h3>
+            <form action="#" class="row">
+
+              <div class="form-group col-md-12">
+                <label for="input-5">Diving You're Interested in:</label>
+                <select name="Dive" id="input-5" class="form-control">
+                  <option value="Free Dive">Free Dive</option>
+                  <option value="Open Water">Open Water</option>
+                  <option value="Advance Open Water">Advance Open Water</option>
+                  <option value="Night Dive">Night Dive</option>
+                  <option value="Deep Dive">Deep Dive</option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="input-6">Date</label>
+                <input type="date" class="form-control" id="input-6" name="Email">
+              </div>
+
+              <div class="form-group col-md-12">
+                <input type="submit" class="btn btn-primary py-3 px-5" value="Book Now">
+              </div>
+
+            </form>
+          </div>
         </div>
       </div>
     </div>

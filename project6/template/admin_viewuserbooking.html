@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  {% load static %}
 
 <head>
   <title>WaterBoat &mdash; Website Template by Colorlib</title>
@@ -59,7 +60,7 @@
               <nav class="site-navigation position-relative text-right" role="navigation">
                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none pl-0 d-lg-block">
                   <li class="active">
-                    <a href="{% url 'user_homepage' %}" class="nav-link text-left">Home</a>
+                    <a href="{% url 'admin_homepage' %}" class="nav-link text-left">Home</a>
                   </li>
                 </ul>
                 </ul>
@@ -82,73 +83,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AddPlace</title>
+    <title>NewTrainer</title>
 </head>
 <body>
+    
+    
+        <table align="center" border="1">
+            <thead>
+              <tr>
+                <td>User</td>
+                <td>Bookings</td>
+            </tr>
+            </thead>
 
-
-  <h2 style="text-align: center; margin-top: 40px;">Upcoming Dives</h2>
-  <table align="center" border="1" style="margin-top: 5%; width: 70%; text-align: center;">
-    <thead style="color: black; background-color: #f0f0f0;">
-      <tr>
-        <th>User Name</th>
-        <th>Dive</th>
-        <th>Date</th>
-        <th>Location</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr>
-        <td>...</td>
-        <td>Scuba Level 1</td>
-        <td>2025-12-10</td>
-        <td>Goa Beach</td>
-        <td>Upcoming</td>
-      </tr>
-      <tr>
-        <td>...</td>
-        <td>Deep Sea Dive</td>
-        <td>2025-12-15</td>
-        <td>Kovalam</td>
-        <td>Upcoming</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h2 style="text-align: center; margin-top: 40px;">Dive History</h2>
-  <table align="center" border="1" style="margin-top: 5%; width: 70%; text-align: center;">
-    <thead style="color: black; background-color: #f0f0f0;">
-      <tr>
-        <th>User Name</th>
-        <th>Dive</th>
-        <th>Date</th>
-        <th>Location</th>
-        <th>Result</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr>
-        <td>...</td>
-        <td>Discover Scuba</td>
-        <td>2025-01-20</td>
-        <td>Pondicherry</td>
-        <td>Completed</td>
-      </tr>
-      <tr>
-        <td>...</td>
-        <td>Fun Dive</td>
-        <td>2025-02-05</td>
-        <td>Andaman</td>
-        <td>Completed</td>
-      </tr>
-    </tbody>
-  </table>
-
-
-
+            <tbody>
+              {% for i in a %}
+              <tr>
+                <td>{{ i.name }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
     
 
 </body>
@@ -160,7 +115,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-3">
-            <p class="mb-4"><img src="/static/Index/images/logo.png" alt="Image" class="img-fluid"></p>
+            <p class="mb-4"><img src="{% static 'Index/images/logo.png' %}" alt="Image" class="img-fluid"></p>
             
           </div>
           <div class="col-lg-3">

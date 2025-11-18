@@ -59,7 +59,7 @@
               <nav class="site-navigation position-relative text-right" role="navigation">
                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none pl-0 d-lg-block">
                   <li class="active">
-                    <a href="{% url 'user_homepage' %}" class="nav-link text-left">Home</a>
+                    <a href="{% url 'admin_homepage' %}" class="nav-link text-left">Home</a>
                   </li>
                 </ul>
                 </ul>
@@ -82,72 +82,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AddPlace</title>
+    <title>AddCategory</title>
 </head>
 <body>
+    
+    <form method="post" action="{% url 'category_add' %}">
+      {% csrf_token %}
+        <table align="center">
+            <tr>
+                <td>Enter the category</td>
+                <td><input type="text" name="Name" placeholder="Category" required ></td>
+            </tr>
+            <tr>
+              <td>Enter the description</td>
+              <td>
+                <textarea id="description" name="Description" class="description-box" placeholder="Type your description here..."></textarea>
+              </td>
+            </tr>
+    
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" name="btnsubmit" value="Save">
+                    <input type="reset" name="btncancel" value="Cancel">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <table align="center" border="1" style="margin-top: 5%;">
+      <thead>
+        <tr>
+          <td>Category</td>
+          <td>Description</td>
+          <td>Action</td>
+        </tr>
+      </thead>
 
+      <tbody>
+        {% for i in a %}
+        <tr>
+          <td>{{ i.name }}</td>
+          <td>{{ i.description }}</td>
+          <td>
+            <a href="{% url 'categorydelete' id=i.id %}" class="btn" onclick="return confirm('Are you sure?');">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
 
-  <h2 style="text-align: center; margin-top: 40px;">Upcoming Dives</h2>
-  <table align="center" border="1" style="margin-top: 5%; width: 70%; text-align: center;">
-    <thead style="color: black; background-color: #f0f0f0;">
-      <tr>
-        <th>User Name</th>
-        <th>Dive</th>
-        <th>Date</th>
-        <th>Location</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr>
-        <td>...</td>
-        <td>Scuba Level 1</td>
-        <td>2025-12-10</td>
-        <td>Goa Beach</td>
-        <td>Upcoming</td>
-      </tr>
-      <tr>
-        <td>...</td>
-        <td>Deep Sea Dive</td>
-        <td>2025-12-15</td>
-        <td>Kovalam</td>
-        <td>Upcoming</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h2 style="text-align: center; margin-top: 40px;">Dive History</h2>
-  <table align="center" border="1" style="margin-top: 5%; width: 70%; text-align: center;">
-    <thead style="color: black; background-color: #f0f0f0;">
-      <tr>
-        <th>User Name</th>
-        <th>Dive</th>
-        <th>Date</th>
-        <th>Location</th>
-        <th>Result</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr>
-        <td>...</td>
-        <td>Discover Scuba</td>
-        <td>2025-01-20</td>
-        <td>Pondicherry</td>
-        <td>Completed</td>
-      </tr>
-      <tr>
-        <td>...</td>
-        <td>Fun Dive</td>
-        <td>2025-02-05</td>
-        <td>Andaman</td>
-        <td>Completed</td>
-      </tr>
-    </tbody>
-  </table>
-
-
+    </table>
 
     
 

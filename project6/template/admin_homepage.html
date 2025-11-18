@@ -116,16 +116,16 @@
                   <a href="{% url 'trainer_registration' %}" class="nav-link text-left">Add Trainer</a>
                 </li>
                 <li>
-                  <a href="contact.html" class="nav-link text-left">Contact</a>
+                  <a href="{% url 'login' %}" class="nav-link text-left">Logout</a>
                 </li>
 
                 <!-- 🔒 Login Logo Item -->
-                <li>
+                <!-- <li>
                   <a href="{% url 'login' %}" class="nav-link text-left">
                     <img src="{% static 'Index/images/logo.png' %}" alt="Login" style="height: 24px; vertical-align: middle;">
-                    <span style="margin-left: 8px;">Login</span>
+                    <span style="margin-left: 8px;">Logout</span>
                   </a>
-                </li>
+                </li> -->
               </ul>
             </nav>
           </div>
@@ -137,7 +137,7 @@
     </div>
     
     <div class="hero-slide owl-carousel site-blocks-cover">
-      <div class="intro-section" style="background-image: url('Index/images/hero_1.jpg');">
+      <div class="intro-section" style="background-image: url('static/Index/images/hero_1.jpg');">
         <div class="container">
           <div class="row align-items-center">
             <div class="col-lg-7 ml-auto text-right" data-aos="fade-up">
@@ -149,7 +149,7 @@
         </div>
       </div>
 
-      <div class="intro-section" style="background-image: url('Index/images/hero_2.jpg');">
+      <div class="intro-section" style="background-image: url('static/Index/images/hero_2.jpg');">
         <div class="container">
           <div class="row align-items-center">
             <div class="col-lg-7 mx-auto text-center" data-aos="fade-up">
@@ -172,36 +172,30 @@
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
               <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> Add Place</a></h3>
+                <h3><a href="{% url 'place_add' %}"><span class="icon-room mr-1 text-primary"></span> Add Place</a></h3>
               </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
               <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> Add Category</a></h3>
+                <h3><a href="{% url 'category_add' %}"><span class="icon-room mr-1 text-primary"></span> Add Category</a></h3>
               </div>
             </div>
           </div>
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="service-39381">
-              <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> Add Trainer</a></h3>
-              </div>
-            </div>
-          </div>
+          
 
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
               <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> View Users</a></h3>
+                <h3><a href="{% url 'admin_viewuser' %}"><span class="icon-room mr-1 text-primary"></span> View Users</a></h3>
               </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
               <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> View Bookings</a></h3>
+                <h3><a href="{% url 'admin_viewuserbooking' %}"><span class="icon-room mr-1 text-primary"></span> View User Bookings</a></h3>
               </div>
             </div>
           </div>
@@ -224,7 +218,7 @@
       </div>
     </div>
 
-    <div class="site-section bg-image overlay" style="background-image: url('images/hero_2.jpg');">
+    <div class="site-section bg-image overlay" style="background-image: url('static/Index/images/hero_2.jpg');">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-7 text-center">

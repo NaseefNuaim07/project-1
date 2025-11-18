@@ -28,16 +28,26 @@ urlpatterns = [
     path('login',views.loginp,name='login'),
 
     path('admin_homepage',views.adminhp,name='admin_homepage'),
+    path('admin_viewuser',views.viewuser,name='admin_viewuser'),
 
     path('user_registration',views.userreg,name='user_registration'),
     path('user_homepage',views.userhp,name='user_homepage'),
     path('user_viewbookings',views.userviewbook,name='user_viewbookings'),
+    path('user_viewprofile',views.profile,name='user_viewprofile'),
 
     path('trainer_registration',views.trainerreg,name='trainer_registration'),
     path('trainer_homepage',views.trainerhp,name='trainer_homepage'),
     path('trainer_viewbookings',views.trainerviewbook,name='trainer_viewbookings'),
+    path('trainer_viewprofile',views.profile,name='trainer_viewprofile'),
 
 
+    path('place_add',views.addplace,name='place_add'),
+    path('placedelete/<int:id>/',views.placedelete,name='placedelete'),
+
+    path('category_add',views.addcategory,name='category_add'),
+    path('categorydelete/<int:id>/',views.categorydelete,name='categorydelete'),
+
+    path('admin_viewuserbooking',views.viewbook,name='admin_viewuserbooking'),
 
     
 
