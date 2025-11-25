@@ -36,4 +36,7 @@ class category(models.Model):
 class dive(models.Model):
     date = models.DateField(auto_now_add=True,null=True)
     user_id = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
-
+    places = models.ForeignKey(place,on_delete=models.CASCADE,null=True)
+    categorys = models.ForeignKey(category,on_delete=models.CASCADE,null=True)
+    status=models.CharField(default='pending')
+    trainer_id= models.ForeignKey(trainer,on_delete=models.CASCADE,null=True)

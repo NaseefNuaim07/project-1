@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  {% load static %}
 
 <head>
   <title>WaterBoat &mdash; Website Template by Colorlib</title>
@@ -44,11 +45,7 @@
       <div class="site-mobile-menu-body"></div>
     </div>
 
-
-
     <div class="header-top bg-light">
-   
-
 
       <div class="site-navbar py-2 js-sticky-header site-navbar-target d-none pl-0 d-lg-block" role="banner">
 
@@ -59,7 +56,7 @@
               <nav class="site-navigation position-relative text-right" role="navigation">
                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none pl-0 d-lg-block">
                   <li class="active">
-                    <a href="{% url 'trainer_homepage' %}" class="nav-link text-left">Home</a>
+                    <a href="{% url 'admin_homepage' %}" class="nav-link text-left">Home</a>
                   </li>
                 </ul>
                 </ul>
@@ -75,59 +72,29 @@
     </div>
     <div class="site-section">
       <br><br><br><br>
+
+      <table align="center" border="1">
+          <thead style="color: black; font-weight: 500;">
+            <tr>
+              <td>Users</td>
+              <td>Feedback</td>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Name</td>
+            </tr>
+          </tbody>
+      </table>
     
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AddPlace</title>
-</head>
-<body>
-
-
-  <h2 style="text-align: center; margin-top: 40px;">Upcoming Dives</h2>
-  <table align="center" border="1" style="margin-top: 5%; width: 70%; text-align: center;">
-    <thead style="color: black; background-color: #f0f0f0;">
-      <tr>
-        <th>User Name</th>
-        <th>Dive</th>
-        <th>Date</th>
-        <th>Location</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      {% for i in a %}
-      <tr>
-       <td>{{ i.user_id.first_name }}</td>
-        <td>{{ i.places.name }}</td>
-        <td>{{ i.date }}</td>
-        <td>{{ i.categorys.name }}</td>
-        <td>{{ i.status }}</td>
-
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  
-
-
-    
-
-</body>
-</html>
-  
     </div>
 
     <div class="footer bg-light">
       <div class="container">
         <div class="row">
           <div class="col-lg-3">
-            <p class="mb-4"><img src="/static/Index/images/logo.png" alt="Image" class="img-fluid"></p>
+            <p class="mb-4"><img src="{% static 'Index/images/logo.png' %}" alt="Image" class="img-fluid"></p>
             
           </div>
           <div class="col-lg-3">
@@ -151,7 +118,6 @@
 
       </div>
     </div>
-
 
   </div>
   <!-- .site-wrap -->

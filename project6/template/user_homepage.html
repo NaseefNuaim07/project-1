@@ -27,6 +27,7 @@
 
   <link rel="stylesheet" href="{% static 'Index/css/style.css' %}">
 
+ 
 
 
 </head>
@@ -101,7 +102,6 @@
             <div class="col-lg-7 ml-auto text-right" data-aos="fade-up">
               <h1>Explore, Discover The Ocean</h1>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat, in distinctio nostrum laborum sed quisquam voluptate facilis non.</p>
-              <p><a href="" class="btn btn-primary py-3 px-5">Read More</a></p>
             </div>
           </div>
         </div>
@@ -113,7 +113,6 @@
             <div class="col-lg-7 mx-auto text-center" data-aos="fade-up">
               <h1>Enjoy The Ocean With Your Family</h1>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat, in distinctio nostrum laborum sed quisquam voluptate facilis non.</p>
-              <p><a href="#" class="btn btn-primary py-3 px-5">Read More</a></p>
             </div>
           </div>
         </div>
@@ -214,8 +213,8 @@
       <div class="container">
         <div class="row justify-content-center mb-5">
           <div class="col-md-7 text-center">
-            <span class="text-serif text-primary">Destination</span>
-            <h3 class="heading-92913 text-black text-center">Our Destinations</h3>
+            <span class="text-serif text-primary">Course</span>
+            <h3 class="heading-92913 text-black text-center">Our Courses</h3>
           </div>
         </div>
         <div class="row">
@@ -342,26 +341,46 @@
           <div class="col-md-5">
             <span class="text-serif text-primary">Book Now</span>
             <h3 class="heading-92913 text-black">Book A Dive</h3>
-            <form action="#" class="row">
+            <form action="{% url 'dive_book' %}"  method="post"  class="row">
+              {% csrf_token %}
 
               <div class="form-group col-md-12">
                 <label for="input-5">Diving You're Interested in:</label>
-                <select name="Dive" id="input-5" class="form-control">
-                  <option value="Free Dive">Free Dive</option>
-                  <option value="Open Water">Open Water</option>
-                  <option value="Advance Open Water">Advance Open Water</option>
-                  <option value="Night Dive">Night Dive</option>
-                  <option value="Deep Dive">Deep Dive</option>
+                
+                <select name="category" id="input-5" class="form-control">
+                  {% for i in a %}
+                  <option value="{{i.id}}"  >{{i.name}}</option>
+                   {% endfor %}
+                  
                 </select>
-              </div>
-
-              <div class="form-group col-md-6">
-                <label for="input-6">Date</label>
-                <input type="date" class="form-control" id="input-6" name="Email">
+               
               </div>
 
               <div class="form-group col-md-12">
-                <input type="submit" class="btn btn-primary py-3 px-5" value="Book Now">
+                <label for="input-5">Location:</label>
+                <select name="Location" id="input-5" class="form-control">
+                  {% for i in b %}
+                  <option value="{{i.id}}" >{{i.name}}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+                                      <div class="form-group col-md-6">
+                            <label for="input-6">Date</label>
+                            <input type="date" class="form-control" id="input-6" name="Date">
+                        </div>
+
+                          <script>
+                              // Get today's date in YYYY-MM-DD format
+                              const today = new Date().toISOString().split("T")[0];
+
+                              // Set min attribute to today → blocks past dates
+                              document.getElementById("input-6").min = today;
+                          </script>
+
+              <div class="form-group col-md-12">
+                <input type="submit" class="btn btn-primary py-3 px-5">
               </div>
 
             </form>
@@ -451,6 +470,17 @@
       </div>
     </div>
 
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; padding: 10px 25px; font-weight: bold; border: none; border-radius:8px; cursor: pointer;">
+      <a href="{% url 'user_feedback' %}" 
+        class="btn feedback-btn" 
+        style="background-color: rgb(63, 117, 233); color: white; padding: 10px 25px; border-radius: 8px; text-decoration: none;"
+        onmouseover="this.style.backgroundColor='rgb(35, 90, 200)'" 
+        onmouseout="this.style.backgroundColor='rgb(57, 117, 248)'">
+        Feedback
+      </a>
+    </div>
+
+
     
     <div class="footer bg-light">
       <div class="container">
@@ -496,3 +526,5 @@
 </body>
 
 </html>
+
+

@@ -28,12 +28,19 @@ urlpatterns = [
     path('login',views.loginp,name='login'),
 
     path('admin_homepage',views.adminhp,name='admin_homepage'),
+    path('admin_viewuserbooking',views.viewbook,name='admin_viewuserbooking'),
     path('admin_viewuser',views.viewuser,name='admin_viewuser'),
+    path('admin_viewfeedback',views.viewfeedback,name='admin_viewfeedback'),
+    path('complete/<int:id>',views.completed,name='task_complete'),
+    path('astr/<int:id>',views.asigntr,name='assign_trainer'),
+
 
     path('user_registration',views.userreg,name='user_registration'),
     path('user_homepage',views.userhp,name='user_homepage'),
     path('user_viewbookings',views.userviewbook,name='user_viewbookings'),
     path('user_viewprofile',views.profile,name='user_viewprofile'),
+    path('user_feedback',views.userfeedback,name='user_feedback'),
+    path('divebook',views.divebook,name='dive_book'),
 
     path('trainer_registration',views.trainerreg,name='trainer_registration'),
     path('trainer_homepage',views.trainerhp,name='trainer_homepage'),
@@ -47,7 +54,7 @@ urlpatterns = [
     path('category_add',views.addcategory,name='category_add'),
     path('categorydelete/<int:id>/',views.categorydelete,name='categorydelete'),
 
-    path('admin_viewuserbooking',views.viewbook,name='admin_viewuserbooking'),
+    
 
     
 

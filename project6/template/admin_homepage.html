@@ -113,9 +113,6 @@
                   <a href="{% url 'index' %}" class="nav-link text-left">Home</a>
                 </li>
                 <li>
-                  <a href="{% url 'trainer_registration' %}" class="nav-link text-left">Add Trainer</a>
-                </li>
-                <li>
                   <a href="{% url 'login' %}" class="nav-link text-left">Logout</a>
                 </li>
 
@@ -143,7 +140,6 @@
             <div class="col-lg-7 ml-auto text-right" data-aos="fade-up">
               <h1>Explore, Discover The Ocean</h1>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat, in distinctio nostrum laborum sed quisquam voluptate facilis non.</p>
-              <p><a href="" class="btn btn-primary py-3 px-5">Read More</a></p>
             </div>
           </div>
         </div>
@@ -155,7 +151,6 @@
             <div class="col-lg-7 mx-auto text-center" data-aos="fade-up">
               <h1>Enjoy The Ocean With Your Family</h1>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat, in distinctio nostrum laborum sed quisquam voluptate facilis non.</p>
-              <p><a href="#" class="btn btn-primary py-3 px-5">Read More</a></p>
             </div>
           </div>
         </div>
@@ -172,10 +167,19 @@
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
               <div class="p-4">
+                <h3><a href="{% url 'trainer_registration' %}"><span class="icon-room mr-1 text-primary"></span> Add Trainer</a></h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="service-39381">
+              <div class="p-4">
                 <h3><a href="{% url 'place_add' %}"><span class="icon-room mr-1 text-primary"></span> Add Place</a></h3>
               </div>
             </div>
           </div>
+          
+
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
               <div class="p-4">
@@ -183,8 +187,6 @@
               </div>
             </div>
           </div>
-          
-
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
               <div class="p-4">
@@ -195,21 +197,14 @@
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
               <div class="p-4">
-                <h3><a href="{% url 'admin_viewuserbooking' %}"><span class="icon-room mr-1 text-primary"></span> View User Bookings</a></h3>
+                <h3><a href="{% url 'admin_viewuserbooking' %}"><span class="icon-room mr-1 text-primary"></span>View User Bookings </a></h3>
               </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
               <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> User Feedback</a></h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="service-39381">
-              <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> User Complaints</a></h3>
+                <h3><a href="{% url 'admin_viewfeedback' %}"><span class="icon-room mr-1 text-primary"></span> User Feedback</a></h3>
               </div>
             </div>
           </div>

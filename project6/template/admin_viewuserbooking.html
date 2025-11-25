@@ -93,15 +93,57 @@
               <tr>
                 <td>User</td>
                 <td>Bookings</td>
+                <td>Date</td>
+                <td>Category</td>
+                <td>Status</td>
+                <td>Assign Trainer</td>
+                <td>Action</td>
             </tr>
             </thead>
 
             <tbody>
-              {% for i in a %}
-              <tr>
-                <td>{{ i.name }}</td>
-              </tr>
-              {% endfor %}
+          {% for i in a %}
+<tr>
+    <form action="{% url 'assign_trainer' i.id %}" method="POST">
+        {% csrf_token %}
+
+        <td>{{ i.user_id.first_name }}</td>
+        <td>{{ i.places.name }}</td>
+        <td>{{ i.date }}</td>
+        <td>{{ i.categorys.name }}</td>
+        <td>{{ i.status }}</td>
+
+
+        <td>
+          {% if i.trainer_id == null %}
+            <select name="trainer" class="form-control">
+                {% for j in b %}
+                    <option value="{{ j.id }}">{{ j.name }}</option>
+                {% endfor %}
+            </select>
+          {% else %}
+          {{i.trainer_id.name}}
+          {% endif %}
+        </td>
+
+       <td>
+    {% if i.status == "pending" %}
+        <button type="submit" class="btn btn-danger">Assign Trainer</button>
+
+    {% elif i.status == "Trainer assigned" %}
+        <a href="{% url 'task_complete' i.id %}" class="btn btn-warning">
+            Mark as completed
+        </a>
+
+    {% else %}
+        <span class="btn btn-success disabled">Completed</span>
+    {% endif %}
+</td>
+
+    </form>
+</tr>
+{% endfor %}
+
             </tbody>
         </table>
     

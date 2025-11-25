@@ -95,22 +95,27 @@
         <th>Date</th>
         <th>Location</th>
         <th>Status</th>
+        <td>Trainer</td>
       </tr>
     </thead>
 
     <tbody>
+      {% for i in a %}
       <tr>
-        <td>Scuba Level 1</td>
-        <td>2025-12-10</td>
-        <td>Goa Beach</td>
-        <td>Upcoming</td>
-      </tr>
-      <tr>
-        <td>Deep Sea Dive</td>
-        <td>2025-12-15</td>
-        <td>Kovalam</td>
-        <td>Upcoming</td>
-      </tr>
+        
+        <td>{{ i.places.name }}</td>
+                <td>{{i.date}}</td>
+                <td>{{i.categorys.name}}</td>
+                <td>{{i.status}}</td>
+                {% if status == "Trainer assigned" %}
+                  <td>{{i.trainer_id.name}}</td>
+                {% else %}
+                  <td>Trainer not assigned</td>
+                {% endif %}
+                
+      </tr> 
+      {% endfor %}
+      
     </tbody>
   </table>
 
@@ -121,23 +126,25 @@
         <th>Dive</th>
         <th>Date</th>
         <th>Location</th>
-        <th>Result</th>
+        <th>Status</th>
+        <th>Trainer</th>
+        
       </tr>
     </thead>
 
     <tbody>
+         {% for i in b %}
       <tr>
-        <td>Discover Scuba</td>
-        <td>2025-01-20</td>
-        <td>Pondicherry</td>
-        <td>Completed</td>
-      </tr>
-      <tr>
-        <td>Fun Dive</td>
-        <td>2025-02-05</td>
-        <td>Andaman</td>
-        <td>Completed</td>
-      </tr>
+        
+        <td>{{ i.places.name }}</td>
+                <td>{{i.date}}</td>
+                <td>{{i.categorys.name}}</td>
+                <td>{{i.status}}</td>
+                <td>{{i.trainer_id.name}}</td>
+                
+                
+      </tr> 
+      {% endfor %}
     </tbody>
   </table>
 

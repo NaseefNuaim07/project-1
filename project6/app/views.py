@@ -32,14 +32,35 @@ def adminhp(request):
 
 # admin_viewuserbooking
 def viewbook(request):
-    data = userr.objects.all()
-    return render(request,'admin_viewuserbooking.html',{'a':data})
+    data = dive.objects.all()
+    data1=trainer.objects.all()
+    return render(request,'admin_viewuserbooking.html',{'a':data,'b':data1})
+
+def asigntr(request,id):
+    if request.method == 'POST':
+        trainer_id = request.POST['trainer']
+        trainers = trainer.objects.get(id=trainer_id)
+        data=dive.objects.get(id=id)
+        data.status = "Trainer assigned"
+        data.trainer_id=trainers
+        data.save()
+        return redirect('admin_viewuserbooking')
+
+
+def completed(request,id):
+    data=dive.objects.get(id=id)
+    data.status = "Completed"
+    data.save()
+    return redirect('admin_viewuserbooking')
 
 # admin_viewusers
 def viewuser(request):
     data = userr.objects.all()
     return render(request,'admin_viewuser.html',{'a':data})
 
+# admin_viewfeedback
+def viewfeedback(request):
+    return render(request,'admin_viewfeedback.html')
 
 
 
@@ -63,11 +84,27 @@ def userreg(request):
 
 # user_homepage
 def userhp(request):
-    return render(request,'user_homepage.html')
+    data=category.objects.all()
+    data1=place.objects.all()
+    return render(request,'user_homepage.html',{'a':data,'b':data1})
 
-# user view bookings
+# user view bookings    
 def userviewbook(request):
-    return render(request,'user_viewbookings.html')
+    data=dive.objects.filter(user_id=request.user.id , status='pending')
+    data1=dive.objects.filter(user_id=request.user.id , status='Completed')
+
+    return render(request,'user_viewbookings.html',{'a':data,'b':data1})
+
+
+# user view profile
+def profile(request):
+    data=userr.objects.get(user_id=request.user.id)
+    return render(request,'user_viewprofile.html',{'i':data})
+
+# user feedback
+def userfeedback(request):
+    return render(request,'user_feedback.html')
+
 
 
 # trainer_registration
@@ -94,7 +131,14 @@ def trainerhp(request):
 
 # trainer view bookings
 def trainerviewbook(request):
-    return render(request,'trainer_viewbookings.html')
+    tr = trainer.objects.get(user_id=request.user)   # find trainer linked to user
+    data = dive.objects.filter(trainer_id=tr)     # fetch trainer's dives
+    return render(request, 'trainer_viewbookings.html', {'a': data})
+
+# trainer view profile
+# def profile(request):
+    data=trainer.objects.get(user_id=request.user.id)
+    return render(request,'trainer_viewprofile.html',{'i':data})
 
 # place_add
 def addplace(request):
@@ -136,20 +180,18 @@ def categorydelete(request,id):
 # dive_booking
 def divebook(request):
     if request.method == 'POST':
-        id=request.user.id
+        id=User.objects.get(id=request.user.id)
         date = request.POST['Date']
-        data = dive.objects.create(User_id=id,date=date)
+        places_id = request.POST['Location']
+        categorys_id = request.POST['category']
+        places=place.objects.get(id=places_id)
+        categorys=category.objects.get(id=categorys_id)
+
+        data = dive.objects.create(user_id=id,date=date,places=places,categorys=categorys)
         data.save()
         return HttpResponse('data submitted successfully')
     else:
-        a = dive.objects.all()
-        return render(request,'user_homepage.html')
+        b = dive.objects.all()
+        return render(request,'user_homepage.html',{'a':b})
 
-# user view profile
-def profile(request):
-    data=userr.objects.get(user_id=request.user.id)
-    return render(request,'user_viewprofile.html',{'i':data})
 
-def profile(request):
-    data=trainer.objects.get(user_id=request.user.id)
-    return render(request,'trainer_viewprofile.html',{'i':data})

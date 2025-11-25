@@ -77,58 +77,42 @@
     <div class="site-section">
       <br><br><br><br>
     
+      <form method="post" action="{% url 'place_add' %}">
+        {% csrf_token %}
+          <table align="center">
+              <tr>
+                  <td>Enter the place</td>
+                  <td><input type="text" name="Name" placeholder="Place" required ></td>
+              </tr>
+      
+              <tr>
+                  <td colspan="2" align="center">
+                      <input type="submit" name="btnsubmit" value="Save">
+                      <input type="reset" name="btncancel" value="Cancel">
+                  </td>
+              </tr>
+          </table>
+      </form>
+      <table align="center" border="1" style="margin-top: 5%;">
+        <thead>
+          <tr>
+          <td>Name of the place</td>
+          <td>Action</td>
+          </tr>
+        </thead>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AddPlace</title>
-</head>
-<body>
-    
-    <form method="post" action="{% url 'place_add' %}">
-      {% csrf_token %}
-        <table align="center">
-            <tr>
-                <td>Enter the place</td>
-                <td><input type="text" name="Name" placeholder="Place" required ></td>
-            </tr>
-    
-            <tr>
-                <td colspan="2" align="center">
-                    <input type="submit" name="btnsubmit" value="Save">
-                    <input type="reset" name="btncancel" value="Cancel">
-                </td>
-            </tr>
-        </table>
-    </form>
-    <table align="center" border="1" style="margin-top: 5%;">
-      <thead>
-        <tr>
-        <td>Name of the place</td>
-        <td>Action</td>
-        </tr>
-      </thead>
+        <tbody>
+          {% for i in a %}
+          <tr>
+            <td>{{ i.name }}</td>
+            <td>
+              <a href="{% url 'placedelete' id=i.id %}" class="btn" onclick="return confirm('Are you sure?');">Delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
 
-      <tbody>
-        {% for i in a %}
-        <tr>
-          <td>{{ i.name }}</td>
-          <td>
-            <a href="{% url 'placedelete' id=i.id %}" class="btn" onclick="return confirm('Are you sure?');">Delete</a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-
-    </table>
-
-    
-
-</body>
-</html>
-  
+      </table>
     </div>
 
     <div class="footer bg-light">

@@ -59,7 +59,7 @@
               <nav class="site-navigation position-relative text-right" role="navigation">
                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none pl-0 d-lg-block">
                   <li class="active">
-                    <a href="{% url 'trainer_homepage' %}" class="nav-link text-left">Home</a>
+                    <a href="{% url 'admin_homepage' %}" class="nav-link text-left">Home</a>
                   </li>
                 </ul>
                 </ul>
@@ -75,51 +75,25 @@
     </div>
     <div class="site-section">
       <br><br><br><br>
-    
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AddPlace</title>
-</head>
-<body>
+        <div>
+            <form method="post" action="#" style="text-align: center;">
+                {% csrf_token %}
+                
+                <h2>Share Your Scuba Diving Experience</h2>
+                <br>
 
+                <label for="comments">Share your feedback</label><br>
+                <textarea id="comments" name="comments" placeholder="Tell us what you loved or what we can improve..." rows="6" cols="50" required></textarea>
+                <br><br>
 
-  <h2 style="text-align: center; margin-top: 40px;">Upcoming Dives</h2>
-  <table align="center" border="1" style="margin-top: 5%; width: 70%; text-align: center;">
-    <thead style="color: black; background-color: #f0f0f0;">
-      <tr>
-        <th>User Name</th>
-        <th>Dive</th>
-        <th>Date</th>
-        <th>Location</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      {% for i in a %}
-      <tr>
-       <td>{{ i.user_id.first_name }}</td>
-        <td>{{ i.places.name }}</td>
-        <td>{{ i.date }}</td>
-        <td>{{ i.categorys.name }}</td>
-        <td>{{ i.status }}</td>
-
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  
-
-
-    
-
-</body>
-</html>
+                <button type="submit"
+                        onmouseover="this.style.backgroundColor='#0077b6'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                    Submit Feedback
+                </button>
+            </form>
+        </div>
   
     </div>
 
