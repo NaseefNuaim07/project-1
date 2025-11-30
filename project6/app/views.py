@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
@@ -58,10 +58,6 @@ def viewuser(request):
     data = userr.objects.all()
     return render(request,'admin_viewuser.html',{'a':data})
 
-# admin_viewfeedback
-def viewfeedback(request):
-    return render(request,'admin_viewfeedback.html')
-
 
 
 
@@ -101,11 +97,6 @@ def profile(request):
     data=userr.objects.get(user_id=request.user.id)
     return render(request,'user_viewprofile.html',{'i':data})
 
-# user feedback
-def userfeedback(request):
-    return render(request,'user_feedback.html')
-
-
 
 # trainer_registration
 def trainerreg(request):
@@ -134,6 +125,12 @@ def trainerviewbook(request):
     tr = trainer.objects.get(user_id=request.user)   # find trainer linked to user
     data = dive.objects.filter(trainer_id=tr)     # fetch trainer's dives
     return render(request, 'trainer_viewbookings.html', {'a': data})
+
+def completedbytrainer(request,id):
+    data=dive.objects.get(id=id)
+    data.status = "Completed"
+    data.save()
+    return redirect('trainer_viewbookings')
 
 # trainer view profile
 # def profile(request):
@@ -189,9 +186,53 @@ def divebook(request):
 
         data = dive.objects.create(user_id=id,date=date,places=places,categorys=categorys)
         data.save()
-        return HttpResponse('data submitted successfully')
+        return redirect('user_viewbookings')
     else:
         b = dive.objects.all()
         return render(request,'user_homepage.html',{'a':b})
+    
+
+def submit_medical(request, booking_id):
+    # get booking
+    booking = get_object_or_404(dive, pk=booking_id)
+
+    if request.method == "POST":
+
+        # handling multiple checkboxes
+        selected_conditions = request.POST.getlist("conditions")
+        conditions_csv = ",".join(selected_conditions)
+
+        # create medical entry
+        medical = DiveMedical.objects.create(
+            booking=booking,
+            full_name=request.POST.get("full_name"),
+            dob=request.POST.get("dob"),
+            experience_level=request.POST.get("experience_level"),
+
+            emergency_name=request.POST.get("emergency_name"),
+            emergency_phone=request.POST.get("emergency_phone"),
+
+            conditions=conditions_csv,
+            medical_details=request.POST.get("medical_details"),
+
+            physician=request.POST.get("physician", ""),
+            recent_dive=request.POST.get("recent_dive"),
+        )
+
+        return redirect("medical_details", pk=medical.pk)
+
+    return render(request, "fun_dive_medical_form.html", {"booking": booking})
+
+
+def medical_details(request, pk):
+    details = get_object_or_404(DiveMedical, pk=pk)
+    return render(request, "fun_dive_medical_details.html", {"details": details})
+
+def button_detail(request, id):
+    data=dive.objects.get(id=id)
+    count=data.count
+    buttons = range(1, count + 1)
+
+    return render(request, "admin_button.html", {"buttons": buttons})
 
 

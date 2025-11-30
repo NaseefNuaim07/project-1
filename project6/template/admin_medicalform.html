@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dive Medical Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body{
+      background: linear-gradient(180deg,#00b4d8,#0077b6);
+      padding:2rem 1rem;
+      color:#042a2b;
+    }
+    .details-card{
+      background:#ffffffdd;
+      border-radius:1rem;
+      box-shadow:0 8px 22px rgba(0,0,0,.25);
+      padding:1.5rem;
+      max-width:850px;
+      margin:auto;
+    }
+    .badge-cond{background:#0077b6;}
+  </style>
+</head>
+<body>
+  <main class="details-card">
+    <h2 class="mb-3"><i class="bi bi-journal-medical me-2"></i>Diver Medical Information</h2>
+    <hr>
+
+    <!-- Basic Info -->
+    <h5 class="text-primary">Personal Details</h5>
+    <p><strong>Name:</strong> {{ details.full_name }}</p>
+    <p><strong>Date of Birth:</strong> {{ details.dob }}</p>
+    <p><strong>Experience Level:</strong> {{ details.experience_level }}</p>
+
+    <hr>
+
+    <!-- Emergency Contact -->
+    <h5 class="text-primary">Emergency Contact</h5>
+    <p><strong>Name:</strong> {{ details.emergency_name }}</p>
+    <p><strong>Phone:</strong> {{ details.emergency_phone }}</p>
+
+    <hr>
+
+    <!-- Medical Conditions -->
+    <h5 class="text-primary">Medical Conditions</h5>
+
+    {% if details.conditions_list %}
+      <div class="mb-2">
+        {% for cond in details.conditions_list %}
+          <span class="badge text-light badge-cond me-1">{{ cond }}</span>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No medical conditions were selected.</p>
+    {% endif %}
+
+    <p><strong>Details:</strong><br>{{ details.medical_details|linebreaks }}</p>
+
+    <hr>
+
+    <!-- Other Info -->
+    <h5 class="text-primary">Additional Info</h5>
+    <p><strong>Primary Physician:</strong> {{ details.physician|default:"Not provided" }}</p>
+    <p><strong>Dived in last 48 hours?:</strong> {{ details.recent_dive|capfirst }}</p>
+
+    <hr>
+    <div class="text-end">
+      <a href="{% url 'medical_list' %}" class="btn btn-secondary"><i class="bi bi-arrow-left me-1"></i>Back</a>
+    </div>
+  </main>
+</body>
+</html>

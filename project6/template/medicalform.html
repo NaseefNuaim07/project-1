@@ -1,0 +1,251 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fun Dive Medical Form</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+      :root{
+        --sea-1: #0077b6;
+        --sea-2: #00b4d8;
+        --sand: #f6e8c3;
+        --accent: #ffb703;
+      }
+      body{
+        min-height:100vh;
+        background: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.05), transparent 5%), linear-gradient(180deg,var(--sea-1), var(--sea-2));
+        color:#042a2b;
+        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        padding:2rem 1rem;
+      }
+
+      /* Card */
+      .dive-card{
+        background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.90));
+        border-radius:1rem;
+        padding:1.5rem;
+        box-shadow: 0 10px 30px rgba(3,45,51,0.25);
+        max-width:900px;
+        margin: 0 auto;
+      }
+
+      .header-crest{
+        display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;
+      }
+      .crest{
+        width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:var(--sand);box-shadow: 0 6px 18px rgba(0,0,0,.12);
+      }
+      .crest i{font-size:28px;color:var(--sea-1)}
+
+      /* underwater bubbles - decorative */
+      .bubbles{position:fixed;inset:auto 0 0 0;z-index:0;pointer-events:none}
+      .bubble{position:absolute;border-radius:50%;opacity:.12;filter:blur(2px);}
+      .bubble.b1{width:120px;height:120px;left:5%;bottom:10%;background:#fff}
+      .bubble.b2{width:80px;height:80px;left:20%;bottom:8%;background:#fff}
+      .bubble.b3{width:140px;height:140px;right:10%;bottom:6%;background:#fff}
+
+      /* subtle input focus */
+      .form-floating > .form-control:focus{box-shadow:0 0 0 .15rem rgba(0,180,216,.15)}
+
+      /* fun checkbox look */
+      .check-pulse:checked + label::after{content:'';position:absolute;inset:0;border-radius:.5rem;box-shadow:0 6px 24px rgba(0,180,216,.12)}
+
+      footer.small-note{font-size:.85rem;color:#085e6d;margin-top:.75rem}
+
+      /* responsive tweaks */
+      @media (max-width:576px){
+        .header-crest h1{font-size:1.25rem}
+        .crest{width:52px;height:52px}
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="bubbles" aria-hidden="true">
+      <div class="bubble b1"></div>
+      <div class="bubble b2"></div>
+      <div class="bubble b3"></div>
+    </div>
+
+    <main class="dive-card position-relative">
+      <div class="header-crest">
+        <div class="crest"><i class="bi bi-water"></i></div>
+        <div>
+          <h1 class="h4 mb-0">BlueWave Dive — Medical Clearance Form</h1>
+          <div class="small text-muted">Keep it honest — your safety is our priority 🐠</div>
+        </div>
+      </div>
+
+      <!-- Django tip: This template uses plain HTML inputs but includes the CSRF token below.
+           If you prefer Django forms, replace the <form> contents with {{ form.as_p }} or individual {{ form.field }} fields. -->
+
+      <form method="post" action="{% url 'submit_medical' %}" novalidate>
+        {% csrf_token %}
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="fullName" name="full_name" placeholder="Full name" required>
+              <label for="fullName">Full name</label>
+              <div class="invalid-feedback">Please enter the diver's name.</div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-floating">
+              <input type="date" class="form-control" id="dob" name="dob" placeholder="Date of birth" required>
+              <label for="dob">Date of birth</label>
+              <div class="invalid-feedback">Please provide a date of birth.</div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-select-lg">
+              <select class="form-select" id="experienceLevel" name="experience_level" aria-label="Experience level">
+                <option value="Beginner">Beginner</option>
+                <option value="Advanced">Advanced</option>
+                <option value="Professional">Professional</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Emergency contact</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-person-lines-fill"></i></span>
+              <input type="text" class="form-control" name="emergency_name" placeholder="Name" required>
+              <input type="tel" class="form-control" name="emergency_phone" placeholder="Phone" required>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Medical checklist — please tick any that apply</label>
+            <div class="row">
+              <div class="col-sm-6 col-lg-4 mb-2">
+                <div class="form-check position-relative">
+                  <input class="form-check-input check-pulse" type="checkbox" value="asthma" id="asthma" name="conditions">
+                  <label class="form-check-label ps-3" for="asthma">Asthma / Reactive Airways</label>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-lg-4 mb-2">
+                <div class="form-check position-relative">
+                  <input class="form-check-input" type="checkbox" value="heart" id="heart" name="conditions">
+                  <label class="form-check-label ps-3" for="heart">Heart disease / chest pain</label>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-lg-4 mb-2">
+                <div class="form-check position-relative">
+                  <input class="form-check-input" type="checkbox" value="seizures" id="seizures" name="conditions">
+                  <label class="form-check-label ps-3" for="seizures">Seizures / epilepsy</label>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-lg-4 mb-2">
+                <div class="form-check position-relative">
+                  <input class="form-check-input" type="checkbox" value="diabetes" id="diabetes" name="conditions">
+                  <label class="form-check-label ps-3" for="diabetes">Diabetes</label>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-lg-4 mb-2">
+                <div class="form-check position-relative">
+                  <input class="form-check-input" type="checkbox" value="recent_surgery" id="recent_surgery" name="conditions">
+                  <label class="form-check-label ps-3" for="recent_surgery">Recent surgery / hospitalization</label>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-lg-4 mb-2">
+                <div class="form-check position-relative">
+                  <input class="form-check-input" type="checkbox" value="pregnant" id="pregnant" name="conditions">
+                  <label class="form-check-label ps-3" for="pregnant">Pregnant / trying to conceive</label>
+                </div>
+              </div>
+
+            </div>
+            <div class="form-text">If you selected any condition above please provide details below.</div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Details (medicines, dates, notes)" id="medDetails" name="medical_details" style="height:100px"></textarea>
+              <label for="medDetails">Medical details</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="physician" name="physician" placeholder="Your physician">
+              <label for="physician">Primary physician (optional)</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Have you dived in the last 48 hours?</label>
+            <div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="recent_dive" id="dive_yes" value="yes">
+                <label class="form-check-label" for="dive_yes">Yes</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="recent_dive" id="dive_no" value="no" checked>
+                <label class="form-check-label" for="dive_no">No</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 text-center mt-2">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="consent" name="consent" required>
+              <label class="form-check-label" for="consent">I confirm the information above is true to the best of my knowledge. I accept that diving involves risk.</label>
+              <div class="invalid-feedback">You must give consent to continue.</div>
+            </div>
+          </div>
+
+          <div class="col-12 text-end">
+            <button class="btn btn-lg btn-primary" type="submit"><i class="bi bi-check-circle me-2"></i>Submit medical form</button>
+          </div>
+
+        </div>
+      </form>
+
+      <footer class="small-note">If you're unsure about a medical condition, check with your doctor. This form does not replace medical advice.</footer>
+    </main>
+
+    <!-- Optional JavaScript: Bootstrap bundle includes Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Bootstrap validation
+      (function () {
+        'use strict'
+        const forms = document.querySelectorAll('form')
+        Array.from(forms).forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+          }, false)
+        })
+      })()
+
+      // small usability: show hospital-style warning if certain boxes checked
+      const flags = document.querySelectorAll('input[name="conditions"]')
+      flags.forEach(cb => cb.addEventListener('change', ()=>{
+        const anyChecked = Array.from(flags).some(i=>i.checked)
+        const footer = document.querySelector('.small-note')
+        footer.textContent = anyChecked ? 'You selected one or more medical conditions. We may require a doctor clearance prior to diving.' : 'If you\'re unsure about a medical condition, check with your doctor. This form does not replace medical advice.'
+      }))
+    </script>
+  </body>
+</html>

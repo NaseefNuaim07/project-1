@@ -30,7 +30,6 @@ urlpatterns = [
     path('admin_homepage',views.adminhp,name='admin_homepage'),
     path('admin_viewuserbooking',views.viewbook,name='admin_viewuserbooking'),
     path('admin_viewuser',views.viewuser,name='admin_viewuser'),
-    path('admin_viewfeedback',views.viewfeedback,name='admin_viewfeedback'),
     path('complete/<int:id>',views.completed,name='task_complete'),
     path('astr/<int:id>',views.asigntr,name='assign_trainer'),
 
@@ -39,12 +38,12 @@ urlpatterns = [
     path('user_homepage',views.userhp,name='user_homepage'),
     path('user_viewbookings',views.userviewbook,name='user_viewbookings'),
     path('user_viewprofile',views.profile,name='user_viewprofile'),
-    path('user_feedback',views.userfeedback,name='user_feedback'),
     path('divebook',views.divebook,name='dive_book'),
 
     path('trainer_registration',views.trainerreg,name='trainer_registration'),
     path('trainer_homepage',views.trainerhp,name='trainer_homepage'),
     path('trainer_viewbookings',views.trainerviewbook,name='trainer_viewbookings'),
+    path('trainer_complete/<int:id>',views.completedbytrainer,name='completed'),
     path('trainer_viewprofile',views.profile,name='trainer_viewprofile'),
 
 
@@ -54,7 +53,12 @@ urlpatterns = [
     path('category_add',views.addcategory,name='category_add'),
     path('categorydelete/<int:id>/',views.categorydelete,name='categorydelete'),
 
-    
+    path("medical/<int:booking_id>/fill/", views.submit_medical, name="submit_medical"),
+    path("medical/details/<int:pk>/", views.medical_details, name="medical_details"),
+
+    path("button/<int:id>/", views.button_detail, name="button_detail"),
+
+
 
     
 

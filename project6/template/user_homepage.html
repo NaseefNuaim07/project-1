@@ -77,11 +77,15 @@
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none pl-0 d-lg-block">
                 <li class="active">
-                  <a href="{% url 'index' %}" class="nav-link text-left">Home</a>
+                  <a href="{% url 'user_homepage' %}" class="nav-link text-left">Home</a>
+                </li>
+                <li>
+                  <a href="{% url 'user_homepage' %}" class="nav-link text-left">View Details</a>
                 </li>
                 <li>
                   <a href="{% url 'user_viewbookings' %}" class="nav-link text-left">View Bookings</a>
                 </li>
+               
                 
               </ul>                                                                                                                                                                                                                                                                                          </ul>
             </nav>
@@ -96,12 +100,12 @@
     </div>
     
     <div class="hero-slide owl-carousel site-blocks-cover">
-      <div class="intro-section" style="background-image: url('static/Index/images/hero_1.jpg');">
+      <div class="intro-section" style="background-image: url('static/Index/images/explore.jpg');">
         <div class="container">
           <div class="row align-items-center">
             <div class="col-lg-7 ml-auto text-right" data-aos="fade-up">
               <h1>Explore, Discover The Ocean</h1>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat, in distinctio nostrum laborum sed quisquam voluptate facilis non.</p>
+              <p>“The deeper you dive, the quieter the world becomes. In that silence, you find a new rhythm—your breath, your heartbeat, your curiosity. Scuba diving teaches you to explore gently and appreciate every hidden detail the ocean reveals”</p>
             </div>
           </div>
         </div>
@@ -112,7 +116,7 @@
           <div class="row align-items-center">
             <div class="col-lg-7 mx-auto text-center" data-aos="fade-up">
               <h1>Enjoy The Ocean With Your Family</h1>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat, in distinctio nostrum laborum sed quisquam voluptate facilis non.</p>
+              <p>“Scuba diving is where the world above fades, and a new world quietly opens beneath you. Every dive reminds you how small you are and how beautiful the ocean can be. Underwater, peace becomes louder than words”</p>
             </div>
           </div>
         </div>
@@ -125,14 +129,14 @@
       <div class="container">
         <div class="row">
           <div class="col-md-6">
-            <img src="{% static 'Index/images/hero_2.jpg' %}" alt="Image" class="img-fluid">
+            <img src="{% static 'Index/images/about.jpg' %}" alt="Image" class="img-fluid">
           </div>
           <div class="col-md-6">
             <span class="text-serif text-primary">About Us</span>
             <h3 class="heading-92913 text-black">Welcome To Our Website</h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum, illum, quasi. Odit velit deserunt eligendi unde, enim. Enim fugiat.</p>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium eius ullam impedit architecto debitis facilis!</p>
-            <p><a href="#" class="btn btn-primary py-3 px-4">Learn More</a></p>
+            <!-- <p><a href="#" class="btn btn-primary py-3 px-4">Learn More</a></p> -->
           </div>
         </div>
       </div>
@@ -146,8 +150,8 @@
               <span class="wrap-icon-39293">
                 <span class="flaticon-yacht"></span>
               </span>
-              <h3>Luxuries Yacht</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus ipsa, ad ratione quos distinctio unde.</p>
+              <h3>Dive Tavel</h3>
+              <p>Our experts can help you find the perfect destination, with a variety of marine life and plan a dive adventure that's funmemorable, and as wotry-free as possible.</p>
             </div>
           </div>
           <div class="col-md-6 col-lg-4">
@@ -155,8 +159,8 @@
               <span class="wrap-icon-39293">
                 <span class="flaticon-shield"></span>
               </span>
-              <h3>30 Years of Experience</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus ipsa, ad ratione quos distinctio unde.</p>
+              <h3>10 Years of Experience</h3>
+              <p>Diving alongside passionate individuals who've become like fomily, Together, we've explored the depths and celebrated the joy of diving.</p>
             </div>
           </div>
           <div class="col-md-6 col-lg-4">
@@ -164,26 +168,20 @@
               <span class="wrap-icon-39293">
                 <span class="flaticon-captain"></span>
               </span>
-              <h3>Good Captain</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus ipsa, ad ratione quos distinctio unde.</p>
+              <h3>Trainers</h3>
+              <p>Guiding students through their first breaths underwater and witnessing their exitement is a privilege I cherish..</p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="site-section bg-image overlay" style="background-image: url('static/Index/images/hero_1.jpg');">
+    <div class="site-section bg-image overlay" style="background-image: url('static/Index/images/explore.jpg');">
       <div class="container">
         <div class="row">
           <div class="col">
             <div class="counter-39392">
-              <h3>349</h3>
-              <span>Number of Yacht</span>
-            </div>
-          </div>
-          <div class="col">
-            <div class="counter-39392">
-              <h3>7000+</h3>
+              <h3>2000+</h3>
               <span>Customers Satisfied</span>
             </div>
           </div>
@@ -195,14 +193,14 @@
           </div>
           <div class="col">
             <div class="counter-39392">
-              <h3>493</h3>
+              <h3>13</h3>
               <span>Sea Destinations</span>
             </div>
           </div>
           <div class="col">
             <div class="counter-39392">
-              <h3>230</h3>
-              <span>Professional Sailors</span>
+              <h3>50</h3>
+              <span>Professional Divers</span>
             </div>
           </div>
         </div>
@@ -220,13 +218,13 @@
         <div class="row">
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
-              <img src="{% static 'Index/images/hero_1.jpg' %}" alt="Image" class="img-fluid">
+              <img src="{% static 'Index/images/openwater.jpg' %}" alt="Image" class="img-fluid">
               <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> Croatia &mdash; Columbia</a></h3>
+                <h3><a href="#">Openwater</a></h3>
                 <div class="d-flex">
                   <div class="mr-auto">
                     <span class="icon-date_range"></span>
-                    Sep. 05 &mdash; Oct. 15
+                    3 &mdash; 4 Days
                   </div>
                   <div class="ml-auto price">
                     <span class="bg-primary">$600</span>
@@ -238,13 +236,13 @@
           </div>
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
-              <img src="{% static 'Index/images/hero_2.jpg' %}" alt="Image" class="img-fluid">
+              <img src="{% static 'Index/images/advance.jpg' %}" alt="Image" class="img-fluid">
               <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> Croatia &mdash; Columbia</a></h3>
+                <h3><a href="#">Advance Openwater</a></h3>
                 <div class="d-flex">
                   <div class="mr-auto">
                     <span class="icon-date_range"></span>
-                    Sep. 05 &mdash; Oct. 15
+                    2 &mdash; 3 Days
                   </div>
                   <div class="ml-auto price">
                     <span class="bg-primary">$600</span>
@@ -256,13 +254,13 @@
           </div>
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
-              <img src="{% static 'Index/images/hero_1.jpg' %}" alt="Image" class="img-fluid">
+              <img src="{% static 'Index/images/rescue.jpg' %}" alt="Image" class="img-fluid">
               <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> Croatia &mdash; Columbia</a></h3>
+                <h3><a href="#">Rescue Diver</a></h3>
                 <div class="d-flex">
                   <div class="mr-auto">
                     <span class="icon-date_range"></span>
-                    Sep. 05 &mdash; Oct. 15
+                    3 &mdash; 4 Days
                   </div>
                   <div class="ml-auto price">
                     <span class="bg-primary">$600</span>
@@ -275,13 +273,13 @@
 
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
-              <img src="{% static 'Index/images/hero_2.jpg' %}" alt="Image" class="img-fluid">
+              <img src="{% static 'Index/images/deep.jpg' %}" alt="Image" class="img-fluid">
               <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> Croatia &mdash; Columbia</a></h3>
+                <h3><a href="#">Deep Diver</a></h3>
                 <div class="d-flex">
                   <div class="mr-auto">
                     <span class="icon-date_range"></span>
-                    Sep. 05 &mdash; Oct. 15
+                    4 &mdash; 5 Days
                   </div>
                   <div class="ml-auto price">
                     <span class="bg-primary">$600</span>
@@ -293,13 +291,13 @@
           </div>
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
-              <img src="{% static 'Index/images/hero_1.jpg' %}" alt="Image" class="img-fluid">
+              <img src="{% static 'Index/images/underwaterphotography.jpg' %}" alt="Image" class="img-fluid">
               <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> Croatia &mdash; Columbia</a></h3>
+                <h3><a href="#">Underwater Photography</a></h3>
                 <div class="d-flex">
                   <div class="mr-auto">
                     <span class="icon-date_range"></span>
-                    Sep. 05 &mdash; Oct. 15
+                    3 &mdash; 4 Days
                   </div>
                   <div class="ml-auto price">
                     <span class="bg-primary">$600</span>
@@ -311,13 +309,13 @@
           </div>
           <div class="col-md-6 col-lg-4 mb-4">
             <div class="service-39381">
-              <img src="{% static 'Index/images/hero_2.jpg' %}" alt="Image" class="img-fluid">
+              <img src="{% static 'Index/images/fun.jpg' %}" alt="Image" class="img-fluid">
               <div class="p-4">
-                <h3><a href="#"><span class="icon-room mr-1 text-primary"></span> Croatia &mdash; Columbia</a></h3>
+                <h3><a href="#">Fun Dive</a></h3>
                 <div class="d-flex">
                   <div class="mr-auto">
                     <span class="icon-date_range"></span>
-                    Sep. 05 &mdash; Oct. 15
+                    1 Day
                   </div>
                   <div class="ml-auto price">
                     <span class="bg-primary">$600</span>
@@ -336,7 +334,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-7">
-            <p><img src="{% static 'Index/images/hero_1.jpg' %}" alt="Image" class="img-fluid"></p>
+            <p><img src="{% static 'Index/images/book.jpg' %}" alt="Image" class="img-fluid"></p>
           </div>
           <div class="col-md-5">
             <span class="text-serif text-primary">Book Now</span>
@@ -393,24 +391,20 @@
       <div class="container">
         <div class="row justify-content-center mb-5">
           <div class="col-md-7 text-center">
-            <span class="text-serif text-primary">Team</span>
-            <h3 class="heading-92913 text-black text-center">Our Team</h3>
+            <span class="text-serif text-primary">Instructors</span>
+            <h3 class="heading-92913 text-black text-center">Our Instructors</h3>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-3 col-md-6 mb-lg-0">
             <div class="person">
               <figure>
-                <img src="{% static 'Index/images/person_1.jpg' %}" alt="Image" class="img-fluid">
-                <div class="social">
-                  <a href="#"><span class="icon-facebook"></span></a>
-                  <a href="#"><span class="icon-twitter"></span></a>
-                  <a href="#"><span class="icon-linkedin"></span></a>
-                </div>
+                <img src="{% static 'Index/images/Trchristina.jpg' %}" alt="Image" class="img-fluid">
+                
               </figure>
               <div class="person-contents">
-                <h3>Craig Daniel</h3>
-                <span class="position">Engineer</span>
+                <h3>Christina</h3>
+                <span class="position">Instructor</span>
               </div>
             </div>
           </div>
@@ -418,16 +412,12 @@
           <div class="col-lg-3 col-md-6 mb-lg-0">
             <div class="person">
               <figure>
-                <img src="{% static 'Index/images/person_2.jpg' %}" alt="Image" class="img-fluid">
-                <div class="social">
-                  <a href="#"><span class="icon-facebook"></span></a>
-                  <a href="#"><span class="icon-twitter"></span></a>
-                  <a href="#"><span class="icon-linkedin"></span></a>
-                </div>
+                <img src="{% static 'Index/images/TrJack.jpg' %}" alt="Image" class="img-fluid">
+                
               </figure>
               <div class="person-contents">
-                <h3>Craig Daniel</h3>
-                <span class="position">Engineer</span>
+                <h3>Jack</h3>
+                <span class="position">Instructor</span>
               </div>
             </div>
           </div>
@@ -435,16 +425,12 @@
           <div class="col-lg-3 col-md-6 mb-lg-0">
             <div class="person">
               <figure>
-                <img src="{% static 'Index/images/person_3.jpg' %}" alt="Image" class="img-fluid">
-                <div class="social">
-                  <a href="#"><span class="icon-facebook"></span></a>
-                  <a href="#"><span class="icon-twitter"></span></a>
-                  <a href="#"><span class="icon-linkedin"></span></a>
-                </div>
+                <img src="{% static 'Index/images/TrJane.jpg' %}" alt="Image" class="img-fluid">
+                
               </figure>
               <div class="person-contents">
-                <h3>Craig Daniel</h3>
-                <span class="position">Engineer</span>
+                <h3>Jane</h3>
+                <span class="position">Instructor</span>
               </div>
             </div>
           </div>
@@ -452,16 +438,12 @@
           <div class="col-lg-3 col-md-6 mb-lg-0">
             <div class="person">
               <figure>
-                <img src="{% static 'Index/images/person_4.jpg' %}" alt="Image" class="img-fluid">
-                <div class="social">
-                  <a href="#"><span class="icon-facebook"></span></a>
-                  <a href="#"><span class="icon-twitter"></span></a>
-                  <a href="#"><span class="icon-linkedin"></span></a>
-                </div>
+                <img src="{% static 'Index/images/Trsam.jpg' %}" alt="Image" class="img-fluid">
+                
               </figure>
               <div class="person-contents">
-                <h3>Craig Daniel</h3>
-                <span class="position">Engineer</span>
+                <h3>Henry</h3>
+                <span class="position">Instructor</span>
               </div>
             </div>
           </div>
@@ -470,24 +452,12 @@
       </div>
     </div>
 
-    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; padding: 10px 25px; font-weight: bold; border: none; border-radius:8px; cursor: pointer;">
-      <a href="{% url 'user_feedback' %}" 
-        class="btn feedback-btn" 
-        style="background-color: rgb(63, 117, 233); color: white; padding: 10px 25px; border-radius: 8px; text-decoration: none;"
-        onmouseover="this.style.backgroundColor='rgb(35, 90, 200)'" 
-        onmouseout="this.style.backgroundColor='rgb(57, 117, 248)'">
-        Feedback
-      </a>
-    </div>
-
-
     
     <div class="footer bg-light">
       <div class="container">
         <div class="row">
           <div class="col-lg-3">
             <p class="mb-4"><img src="{% static 'Index/images/logo.png' %}" alt="Image" class="img-fluid"></p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae nemo minima qui dolor, iusto iure.</p>  
           </div>
                         
         </div>

@@ -96,6 +96,7 @@
         <th>Date</th>
         <th>Location</th>
         <th>Status</th>
+        <th>Action</th>
       </tr>
     </thead>
 
@@ -107,7 +108,16 @@
         <td>{{ i.date }}</td>
         <td>{{ i.categorys.name }}</td>
         <td>{{ i.status }}</td>
+        <td>
+        {% if i.status == "Trainer assigned" %}
+        <a href="{% url 'task_complete' i.id %}" class="btn btn-warning">
+            Mark as completed
+        </a>
 
+    {% else %}
+        <span class="btn btn-success disabled">Completed</span>
+    {% endif %}
+        </td> 
       </tr>
       {% endfor %}
     </tbody>
