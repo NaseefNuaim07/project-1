@@ -111,7 +111,7 @@ def trainerreg(request):
         data1 = trainer.objects.create(name=name,contact=contact,gender=gender,user_id=data,email=email,password=password)
         data1.save()
 
-        return HttpResponse('data submitted successfully')
+        return redirect('trainer_registration')
     else:
         b=trainer.objects.all()
         return render(request,'trainer_registration.html',{'a':b})
@@ -132,10 +132,26 @@ def completedbytrainer(request,id):
     data.save()
     return redirect('trainer_viewbookings')
 
+def backbtntrnr(request):
+    if trainer.objects.filter(user_id=request.user.id).exists():
+        return redirect('trainer_viewbookings')
+
+    elif userr.objects.filter(user_id=request.user.id).exists():
+        return redirect('user_viewbookings')
+
+    else:
+        return redirect('admin_viewuserbooking')
+
 # trainer view profile
 def trainer_profile(request):
     data=trainer.objects.get(user_id=request.user.id)
     return render(request,'trainer_viewprofile.html',{'i':data})
+
+# trainer_delete    
+def trainerdelete(request,id):
+    trainers = trainer.objects.get(id=id)
+    trainers.delete()
+    return redirect('trainer_registration')
 
 # place_add
 def addplace(request):
@@ -143,7 +159,7 @@ def addplace(request):
         name = request.POST['Name']
         data = place.objects.create(name=name)
         data.save()
-        return HttpResponse('data submitted successfully')
+        return redirect('place_add')
     else:
         b = place.objects.all()
         return render(request,'place_add.html',{'a':b})
@@ -162,7 +178,7 @@ def addcategory(request):
         description = request.POST['Description']
         data = category.objects.create(name=name,description=description)
         data.save()
-        return HttpResponse('data submitted successfully')
+        return redirect('category_add')
     else:
         b = category.objects.all()
         return render(request,'category_add.html',{'a':b})

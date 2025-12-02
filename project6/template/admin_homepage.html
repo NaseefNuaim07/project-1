@@ -55,8 +55,14 @@
               <!-- <strong>Water</strong>Boat -->
             </a>
           </div>
-         
-          
+
+          <!-- Profile Section -->
+          <div class="col-6 col-lg-3 text-right ml-auto d-flex align-items-center justify-content-end">
+            <form method="POST" action="{% url 'index' %}" class="ml-2">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline btn-sm" style="color: blue;">Logout</button>
+            </form>
+          </div>
 
           <div class="col-6 d-block d-lg-none text-right">
               <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span
@@ -77,9 +83,6 @@
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none pl-0 d-lg-block">
                 <li class="active">
                   <a href="{% url 'admin_homepage' %}" class="nav-link text-left">Home</a>
-                </li>
-                <li>
-                  <a href="{% url 'login' %}" class="nav-link text-left">Logout</a>
                 </li>
 
                 <!-- 🔒 Login Logo Item -->

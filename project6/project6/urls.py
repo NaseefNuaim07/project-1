@@ -45,6 +45,9 @@ urlpatterns = [
     path('trainer_viewbookings',views.trainerviewbook,name='trainer_viewbookings'),
     path('trainer_complete/<int:id>',views.completedbytrainer,name='completed'),
     path('trainer_viewprofile',views.trainer_profile,name='trainer_viewprofile'),
+    path('trainerdelete/<int:id>/',views.trainerdelete,name='trainerdelete'),
+    path('trainer_viewbooking',views.backbtntrnr,name='backtrainer'),
+
 
 
     path('place_add',views.addplace,name='place_add'),

@@ -104,7 +104,7 @@
             </tr>
             <tr>
                 <td>Contact</td>
-                <td><input type="number" name="contact" placeholder="Enter Contact" required ></td>
+                <td><input type="text" name="contact" placeholder="Enter Contact" required ></td>
             </tr>
             <tr>
                 <td>Email</td>
@@ -142,7 +142,7 @@
           <td>{{ i.user_id.username }}</td>
           <td>{{ i.password }}</td>
           <td>
-            <a href="" class="btn" onclick="">Delete</a>
+            <a href="{% url 'trainerdelete' id=i.id %}" class="btn" onclick="return confirm('Are you sure?');">Delete</a>
           </td>
         </tr>
         {% endfor %}
