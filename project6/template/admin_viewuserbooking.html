@@ -95,6 +95,7 @@
                 <td>Bookings</td>
                 <td>Date</td>
                 <td>Category</td>
+                <td>View Details</td>
                 <td>Status</td>
                 <td>Assign Trainer</td>
                 <td>Action</td>
@@ -111,8 +112,10 @@
         <td>{{ i.places.name }}</td>
         <td>{{ i.date }}</td>
         <td>{{ i.categorys.name }}</td>
-        <td>{{ i.status }}</td>
 
+       
+
+        <td>{{ i.status }}</td>
 
         <td>
           {% if i.trainer_id == null %}
@@ -140,8 +143,13 @@
     {% endif %}
 </td>
 
+
     </form>
+     <td>
+          <a href="{% url 'filled_forms' i.id %}"><button class="btn-primary">View</button></a>
+        </td>
 </tr>
+
 {% endfor %}
 
             </tbody>

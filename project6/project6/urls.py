@@ -44,7 +44,7 @@ urlpatterns = [
     path('trainer_homepage',views.trainerhp,name='trainer_homepage'),
     path('trainer_viewbookings',views.trainerviewbook,name='trainer_viewbookings'),
     path('trainer_complete/<int:id>',views.completedbytrainer,name='completed'),
-    path('trainer_viewprofile',views.profile,name='trainer_viewprofile'),
+    path('trainer_viewprofile',views.trainer_profile,name='trainer_viewprofile'),
 
 
     path('place_add',views.addplace,name='place_add'),
@@ -53,10 +53,14 @@ urlpatterns = [
     path('category_add',views.addcategory,name='category_add'),
     path('categorydelete/<int:id>/',views.categorydelete,name='categorydelete'),
 
+    # path('admin_button',views.button_detail,name='admin_button'),
+
     path("medical/<int:booking_id>/fill/", views.submit_medical, name="submit_medical"),
     path("medical/details/<int:pk>/", views.medical_details, name="medical_details"),
 
     path("button/<int:id>/", views.button_detail, name="button_detail"),
+    path("filled_forms/<int:id>/", views.filled_forms_view, name="filled_forms"),
+    path("filled_forms_view/<int:pk>/", views.admin_view_medical_details, name="filled_forms_view"),
 
 
 

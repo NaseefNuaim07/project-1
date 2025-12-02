@@ -133,7 +133,7 @@ def completedbytrainer(request,id):
     return redirect('trainer_viewbookings')
 
 # trainer view profile
-# def profile(request):
+def trainer_profile(request):
     data=trainer.objects.get(user_id=request.user.id)
     return render(request,'trainer_viewprofile.html',{'i':data})
 
@@ -183,8 +183,9 @@ def divebook(request):
         categorys_id = request.POST['category']
         places=place.objects.get(id=places_id)
         categorys=category.objects.get(id=categorys_id)
+        count=request.POST['count']
 
-        data = dive.objects.create(user_id=id,date=date,places=places,categorys=categorys)
+        data = dive.objects.create(user_id=id,date=date,places=places,categorys=categorys,count=count)
         data.save()
         return redirect('user_viewbookings')
     else:
@@ -221,18 +222,52 @@ def submit_medical(request, booking_id):
 
         return redirect("medical_details", pk=medical.pk)
 
-    return render(request, "fun_dive_medical_form.html", {"booking": booking})
+    return render(request, "medicalform.html" ,{"id":booking_id})
 
 
 def medical_details(request, pk):
     details = get_object_or_404(DiveMedical, pk=pk)
-    return render(request, "fun_dive_medical_details.html", {"details": details})
+    id=details.booking.id
+    return render(request, "admin_medicalform.html", {"details": details,"id":id})
 
 def button_detail(request, id):
-    data=dive.objects.get(id=id)
-    count=data.count
-    buttons = range(1, count + 1)
+    # Get dive details
+    data = dive.objects.get(id=id)
+    total_count = data.count
 
-    return render(request, "admin_button.html", {"buttons": buttons})
+    # All filled forms for this booking
+    filled_forms = DiveMedical.objects.filter(booking=id)
+
+    filled_count = filled_forms.count()
+    remaining = total_count - filled_count
+
+    if remaining < 0:
+        remaining = 0
+
+    buttons = range(1, remaining + 1)
+
+    return render(request, "admin_button.html", {
+        "id": id,
+        "buttons": buttons,
+        "filled_forms": filled_forms,
+        "remaining": remaining,
+        "total": total_count,
+        "filled": filled_count
+    })
 
 
+def filled_forms_view(request, id):
+    # Get all filled forms for this booking
+    filled_forms = DiveMedical.objects.filter(booking=id)
+
+    filled_count = filled_forms.count()
+
+    return render(request, "admin_filledforms.html", {
+        "id": id,
+        "filled_forms": filled_forms,
+        "filled": filled_count
+    })
+def admin_view_medical_details(request, pk):
+    details = get_object_or_404(DiveMedical, pk=pk)
+    id=details.booking.id
+    return render(request, "adminviewmedicalform.html", {"details": details,"id":id})

@@ -86,7 +86,7 @@
       <!-- Django tip: This template uses plain HTML inputs but includes the CSRF token below.
            If you prefer Django forms, replace the <form> contents with {{ form.as_p }} or individual {{ form.field }} fields. -->
 
-      <form method="post" action="{% url 'submit_medical' %}" novalidate>
+      <form method="post" action="{% url 'submit_medical' id %}" novalidate>
         {% csrf_token %}
 
         <div class="row g-3">

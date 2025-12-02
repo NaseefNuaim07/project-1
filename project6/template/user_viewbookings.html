@@ -91,9 +91,10 @@
   <table align="center" border="1" style="margin-top: 5%; width: 70%; text-align: center;">
     <thead style="color: black; background-color: #f0f0f0;">
       <tr>
-        <th>Dive</th>
-        <th>Date</th>
         <th>Location</th>
+        <th>Date</th>
+        <th>Dive</th>
+        <th>Details</th>
         <th>Status</th>
         <td>Trainer</td>
       </tr>
@@ -106,6 +107,9 @@
         <td>{{ i.places.name }}</td>
                 <td>{{i.date}}</td>
                 <td>{{i.categorys.name}}</td>
+                <td>
+                  <a href="{% url 'button_detail' i.id %}"><button class="btn-primary">View</button></a>
+                </td>
                 <td>{{i.status}}</td>
                 {% if status == "Trainer assigned" %}
                   <td>{{i.trainer_id.name}}</td>
@@ -123,9 +127,9 @@
   <table align="center" border="1" style="margin-top: 5%; width: 70%; text-align: center;">
     <thead style="color: black; background-color: #f0f0f0;">
       <tr>
-        <th>Dive</th>
-        <th>Date</th>
         <th>Location</th>
+        <th>Date</th>
+        <th>Dive</th>
         <th>Status</th>
         <th>Trainer</th>
         
