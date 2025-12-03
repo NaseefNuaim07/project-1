@@ -74,7 +74,7 @@ def userreg(request):
         data2 = userr.objects.create(name=name,gender=gender,contact=contact,email=email,password=password,user_id=data)
         data2.save()
         
-        return HttpResponse('data submitted successfully')
+        return redirect('user_registration')
     else:
         return render(request,'user_registration.html')
 
