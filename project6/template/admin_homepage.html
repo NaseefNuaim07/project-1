@@ -81,9 +81,10 @@
           <div class="mx-auto">
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none pl-0 d-lg-block">
-                <li class="active">
+                <li>
                   <a href="{% url 'admin_homepage' %}" class="nav-link text-left">Home</a>
                 </li>
+                
 
                 <!-- 🔒 Login Logo Item -->
                 <!-- <li>
@@ -133,45 +134,47 @@
     <div class="site-section bg-light">
       <div class="container">
         <div class="row">
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="service-39381">
-              <div class="p-4">
-                <h3><a href="{% url 'trainer_registration' %}"><span class="icon-room mr-1 text-primary"></span> Add Trainer</a></h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="service-39381">
-              <div class="p-4">
-                <h3><a href="{% url 'place_add' %}"><span class="icon-room mr-1 text-primary"></span> Add Place</a></h3>
-              </div>
-            </div>
-          </div>
-          
 
           <div class="col-md-6 col-lg-4 mb-4">
-            <div class="service-39381">
-              <div class="p-4">
-                <h3><a href="{% url 'category_add' %}"><span class="icon-room mr-1 text-primary"></span> Add Course</a></h3>
-              </div>
-            </div>
+            <a href="{% url 'trainer_registration' %}">
+              <button class="btn btn-primary w-100 py-3">  
+                <span class="icon-room mr-1"></span> Add Trainer
+              </button>
+            </a>
           </div>
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="service-39381">
-              <div class="p-4">
-                <h3><a href="{% url 'admin_viewuser' %}"><span class="icon-room mr-1 text-primary"></span> View Users</a></h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="service-39381">
-              <div class="p-4">
-                <h3><a href="{% url 'admin_viewuserbooking' %}"><span class="icon-room mr-1 text-primary"></span>View User Bookings </a></h3>
-              </div>
-            </div>
-          </div>
-          
 
+          <div class="col-md-6 col-lg-4 mb-4">
+            <a href="{% url 'place_add' %}">
+              <button class="btn btn-primary w-100 py-3">  
+                <span class="icon-room mr-1"></span> Add Location
+              </button>
+            </a>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-4">
+            <a href="{% url 'category_add' %}">
+              <button class="btn btn-primary w-100 py-3">  
+                <span class="icon-room mr-1"></span> Add Course
+              </button>
+            </a>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-4" style="margin-left: 200px;">
+            <a href="{% url 'admin_viewuser' %}">
+              <button class="btn btn-primary w-100 py-3">  
+                <span class="icon-room mr-1"></span> View Users
+              </button>
+            </a>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-4" style="margin-right: 100px;">
+            <a href="{% url 'admin_viewuserbooking' %}">
+              <button class="btn btn-primary w-100 py-3">  
+                <span class="icon-room mr-1"></span> View User Bookings
+              </button>
+            </a>
+          </div>          
+          
         </div>
       </div>
     </div>
