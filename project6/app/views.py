@@ -32,7 +32,7 @@ def adminhp(request):
 
 # admin_viewuserbooking
 def viewbook(request):
-    data = dive.objects.all()
+    data = dive.objects.all().order_by('-date')
     data1=trainer.objects.all()
     return render(request,'admin_viewuserbooking.html',{'a':data,'b':data1})
 
